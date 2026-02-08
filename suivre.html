@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suivre un colis – H.K Transport</title>
+</head>
+<body>
+    <h1>Suivre un colis</h1>
+    <p>Entrez votre numéro de suivi pour connaître le statut de votre colis.</p>
+
+    <input type="text" id="tracking" placeholder="Ex : HK12345">
+    <button onclick="suivre()">Suivre</button>
+
+    <p id="resultat"></p>
+
+    <script>
+        function suivre() {
+            let code = document.getElementById("tracking").value;
+
+            if(code === "") {
+                document.getElementById("resultat").innerHTML = "Veuillez entrer un numéro de suivi.";
+                return;
+            }
+
+            // Exemple simple (à améliorer plus tard)
+            document.getElementById("resultat").innerHTML =
+                "Statut du colis " + code + " : En cours de traitement.";
+        }
+    </script>
+
+    <p><a href="index.html">Retour à l’accueil</a></p>
+</body>
+</html>
