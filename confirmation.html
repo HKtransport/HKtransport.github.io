@@ -88,10 +88,15 @@
 <script>
 // Récupération des données envoyées depuis paiement.html
 const params = new URLSearchParams(window.location.search);
-document.getElementById("montant").textContent = params.get("prix") + " CFA";
-document.getElementById("mode").textContent = params.get("mode");
-document.getElementById("numero").textContent = params.get("numero");
-document.getElementById("code").textContent = params.get("code");
+const prix = params.get("prix");
+const mode = params.get("mode");
+const numero = params.get("numero");
+const code = params.get("code");
+
+document.getElementById("montant").textContent = prix + " CFA";
+document.getElementById("mode").textContent = mode;
+document.getElementById("numero").textContent = numero;
+document.getElementById("code").textContent = code;
 
 // Génération du numéro de suivi
 function genererTracking() {
@@ -103,20 +108,38 @@ function genererTracking() {
 const tracking = genererTracking();
 document.getElementById("tracking").textContent = tracking;
 
+// Enregistrement dans LocalStorage
+function enregistrerPaiement() {
+    const data = {
+        prix: prix,
+        mode: mode,
+        numero: numero,
+        code: code,
+        tracking: tracking,
+        date: new Date().toLocaleString()
+    };
+
+    let paiements = JSON.parse(localStorage.getItem("paiements") || "[]");
+    paiements.push(data);
+    localStorage.setItem("paiements", JSON.stringify(paiements));
+}
+
+enregistrerPaiement();
+
 // Envoi WhatsApp
 document.getElementById("btnWhatsapp").onclick = function() {
     const message =
         "Bonjour, j’ai effectué un paiement pour un envoi de colis.%0A" +
-        "Montant : " + params.get("prix") + " CFA%0A" +
-        "Mode : " + params.get("mode") + "%0A" +
-        "Numéro : " + params.get("numero") + "%0A" +
-        "Code transaction : " + params.get("code") + "%0A" +
+        "Montant : " + prix + " CFA%0A" +
+        "Mode : " + mode + "%0A" +
+        "Numéro : " + numero + "%0A" +
+        "Code transaction : " + code + "%0A" +
         "Numéro de suivi : " + tracking;
 
-    // Ton numéro WhatsApp
     window.location.href = "https://wa.me/221710344501?text=" + message;
 };
 </script>
+
 
 </body>
 </html>
