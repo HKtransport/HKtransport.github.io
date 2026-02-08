@@ -179,9 +179,9 @@ function calculer() {
     const btn = document.getElementById("btnPaiement");
     btn.style.display = "block";
 
-    // Action du bouton
+    // Redirection vers paiement.html
     btn.onclick = function() {
-        alert("Paiement en cours… (fonction à connecter)");
+        window.location.href = "paiement.html?prix=" + prix;
     };
 }
 </script>
