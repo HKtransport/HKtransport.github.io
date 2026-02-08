@@ -178,23 +178,24 @@ function payer() {
     const mode = document.getElementById("mode").value;
     const numero = document.getElementById("numero").value.trim();
     const code = document.getElementById("code").value.trim();
-    const msg = document.getElementById("message");
 
     if (mode !== "agence") {
         if (numero.length < 8) {
-            msg.style.color = "red";
-            msg.textContent = "Veuillez entrer un numéro valide.";
+            alert("Veuillez entrer un numéro valide.");
             return;
         }
         if (code.length < 4) {
-            msg.style.color = "red";
-            msg.textContent = "Veuillez entrer un code de transaction valide.";
+            alert("Veuillez entrer un code de transaction valide.");
             return;
         }
     }
 
-    msg.style.color = "#008000";
-    msg.textContent = "Paiement reçu. Votre envoi sera confirmé sous peu.";
+    // Redirection vers la page de confirmation
+    window.location.href =
+        "confirmation.html?prix=" + prix +
+        "&mode=" + mode +
+        "&numero=" + numero +
+        "&code=" + code;
 }
 </script>
 
