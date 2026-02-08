@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin – H.K Transport</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+    body { margin:0; font-family:'Poppins', sans-serif; background:#f5f5f5; }
+    header { background:#008000; padding:15px; text-align:center; color:white; font-size:22px; font-weight:600; }
+    .card { background:white; padding:20px; border-radius:12px; box-shadow:0 4px 15px rgba(0,0,0,0.1); margin:20px auto; max-width:1000px; }
+    input { width:100%; padding:12px; border-radius:8px; border:1px solid #ccc; margin-top:10px; font-size:16px; }
+    button { padding:10px 18px; border:none; border-radius:8px; background:#008000; color:white; font-weight:600; cursor:pointer; }
+    button:hover { background:#006600; }
+    table { width:100%; border-collapse:collapse; margin-top:15px; font-size:14px; }
+    th, td { border:1px solid #ddd; padding:8px; text-align:left; }
+    th { background:#f0f0f0; }
+    .btn-small { padding:5px 10px; font-size:12px; border-radius:6px; }
+    #adminContent { display:none; }
+</style>
+</head>
+
+<body>
+
+<header>Administration – H.K Transport</header>
+
+<div class="card" id="loginCard">
+    <h2>Connexion admin</h2>
+    <p>Entrez le mot de passe pour accéder au tableau de bord.</p>
+    <input type="password" id="pwd" placeholder="Mot de passe">
+    <button onclick="login()">Se connecter</button>
+    <p id="loginMsg" style="color:red; margin-top:10px;"></p>
+</div>
+
+<div id="adminContent">
+    <div class="card">
+        <h2>Paiements enregistrés</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Montant</th>
+                    <th>Mode</th>
+                    <th>Numéro client</th>
+                    <th>Code transaction</th>
+                    <th>Numéro de suivi</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="tbodyPaiements"></tbody>
+        </table>
+        <button class="btn-small" onclick="viderPaiements()">Vider tous les paiements</button>
+    </div>
+</div>
+
+<script>
+const ADMIN_PASSWORD = "hkadmin1937";
+
+function login() {
+    const pwd = document.getElementById("pwd").value;
+    const msg = document.getElementById("loginMsg");
+
+    if (pwd === ADMIN_PASSWORD) {
+        document.getElementById("loginCard").style.display = "none";
+        document.getElementById("adminContent").style.display = "block";
+        chargerPaiements();
+    } else {
+        msg.textContent = "Mot de passe incorrect.";
+    }
+}
+
+function chargerPaiements() {
+    const tbody = document.getElementById("tbodyPaiements");
+    tbody.innerHTML = "";
+
+    let paiements = JSON.parse(localStorage.getItem("paiements") || "[]");
+
+    if (paiements.length === 0) {
+        tbody.innerHTML = "<tr><td colspan='7'>Aucun paiement enregistré.</td></tr>";
+        return;
+    }
+
+    paiements.forEach((p, index) => {
+        const tr = document.createElement("tr");
+
+        tr.innerHTML = `
+            <td>${p.date || ""}</td>
+            <td>${p.prix} CFA</td>
+            <td>${p.mode}</td>
+            <td>${p.numero}</td>
+            <td>${p.code}</td>
+            <td>${p.tracking}</td>
+            <td><button class="btn-small" onclick="supprimerPaiement(${index})">Supprimer</button></td>
+        `;
+
+        tbody.appendChild(tr);
+    });
+}
+
+function supprimerPaiement(index) {
+    let paiements = JSON.parse(localStorage.getItem("paiements") || "[]");
+    paiements.splice(index, 1);
+    localStorage.setItem("paiements", JSON.stringify(paiements));
+    chargerPaiements();
+}
+
+function viderPaiements() {
+    if (confirm("Supprimer tous les paiements ?")) {
+        localStorage.removeItem("paiements");
+        chargerPaiements();
+    }
+}
+</script>
+
+</body>
+</html>
