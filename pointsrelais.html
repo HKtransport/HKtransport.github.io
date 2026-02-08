@@ -1,31 +1,128 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Points relais – H.K Transport</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Points relais – H.K Transport</title>
+
+<!-- Police moderne -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<!-- Leaflet (Carte OpenStreetMap) -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<style>
+    body { margin:0; font-family:'Poppins', sans-serif; background:#f5f5f5; }
+
+    /* HEADER + MENU */
+    header {
+        background:#008000;
+        padding:15px;
+        text-align:center;
+        color:white;
+        font-size:22px;
+        font-weight:600;
+    }
+
+    nav {
+        display:flex;
+        justify-content:center;
+        gap:25px;
+        margin-top:10px;
+    }
+
+    nav a {
+        color:white;
+        text-decoration:none;
+        font-weight:600;
+    }
+
+    nav a:hover { text-decoration:underline; }
+
+    /* CARD */
+    .card {
+        background:white;
+        padding:20px;
+        border-radius:12px;
+        box-shadow:0 4px 15px rgba(0,0,0,0.1);
+        margin:20px auto;
+        max-width:900px;
+    }
+
+    #map {
+        height:350px;
+        width:100%;
+        border-radius:12px;
+        margin-top:20px;
+    }
+
+    footer {
+        background:#004d00;
+        color:white;
+        padding:20px;
+        text-align:center;
+        margin-top:40px;
+    }
+</style>
 </head>
+
 <body>
-    <h1>Points relais</h1>
-    <p>Voici la liste des points relais disponibles pour déposer ou récupérer vos colis.</p>
+
+<header>
+    Points relais
+    <nav>
+        <a href="index.html">Accueil</a>
+        <a href="suivre.html">Suivre un colis</a>
+        <a href="envoyer.html">Envoyer un colis</a>
+        <a href="pointsrelais.html">Points relais</a>
+        <a href="contact.html">Contact</a>
+    </nav>
+</header>
+
+<div class="card">
+    <h2>Nos points relais au Sénégal</h2>
+    <p>Retrouvez ci-dessous la liste de nos points relais disponibles pour déposer ou récupérer vos colis.</p>
 
     <ul>
-        <li><strong>Orléans Centre</strong><br>
-            12 Rue Jeanne d’Arc, 45000 Orléans<br>
-            Ouvert : 9h – 19h
-        </li><br>
-
-        <li><strong>Fleury-les-Aubrais</strong><br>
-            8 Avenue de Paris, 45400 Fleury-les-Aubrais<br>
-            Ouvert : 10h – 18h
-        </li><br>
-
-        <li><strong>Saint-Jean-de-Braye</strong><br>
-            22 Rue du Faubourg, 45800 Saint-Jean-de-Braye<br>
-            Ouvert : 9h – 17h
-        </li><br>
+        <li><b>Dakar :</b> Médina – Avenue Blaise Diagne</li>
+        <li><b>Thiès :</b> Grand Standing – Route de Tivaouane</li>
+        <li><b>Saint-Louis :</b> Sor – Avenue Général de Gaulle</li>
+        <li><b>Kaolack :</b> Médina Baye – Route de Nioro</li>
+        <li><b>Ziguinchor :</b> Lyndiane – Route de l’Aéroport</li>
     </ul>
 
-    <p><a href="index.html">Retour à l’accueil</a></p>
+    <h3>Carte des points relais</h3>
+    <div id="map"></div>
+</div>
+
+<footer>
+    © 2024 H.K Transport – Tous droits réservés  
+    <br>📞 +221 77 000 00 00 — ✉ contact@hktransport.com
+</footer>
+
+<script>
+// Coordonnées des points relais
+const points = [
+    { nom: "Dakar", coords: [14.7167, -17.4677] },
+    { nom: "Thiès", coords: [14.791, -16.925] },
+    { nom: "Saint-Louis", coords: [16.0179, -16.4896] },
+    { nom: "Kaolack", coords: [14.147, -16.072] },
+    { nom: "Ziguinchor", coords: [12.564, -16.273] }
+];
+
+// Initialisation de la carte
+let map = L.map('map').setView([14.5, -15.8], 6);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19
+}).addTo(map);
+
+// Ajout des marqueurs
+points.forEach(p => {
+    L.marker(p.coords).addTo(map).bindPopup("<b>" + p.nom + "</b>");
+});
+</script>
+
 </body>
 </html>
