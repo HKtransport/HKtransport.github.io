@@ -82,6 +82,15 @@
         text-align:center;
         margin-top:40px;
     }
+
+    .info-box {
+        background:#e8ffe8;
+        padding:15px;
+        border-radius:10px;
+        margin-top:15px;
+        border-left:5px solid #008000;
+        display:none;
+    }
 </style>
 </head>
 
@@ -110,15 +119,21 @@
     </p>
 
     <label>Mode de paiement</label>
-    <select id="mode">
+    <select id="mode" onchange="afficherInfos()">
         <option value="wave">Wave</option>
         <option value="om">Orange Money</option>
         <option value="fm">Free Money</option>
         <option value="agence">Paiement en agence</option>
     </select>
 
-    <label>Numéro de téléphone (pour Wave / OM / Free)</label>
+    <!-- Informations dynamiques -->
+    <div id="infoPaiement" class="info-box"></div>
+
+    <label>Votre numéro de téléphone</label>
     <input type="text" id="numero" placeholder="Ex : 77 123 45 67">
+
+    <label>Code de transaction (Wave / OM / Free)</label>
+    <input type="text" id="code" placeholder="Ex : 123456">
 
     <button onclick="payer()">Confirmer le paiement</button>
 
@@ -131,24 +146,55 @@
 </footer>
 
 <script>
-// Récupération du montant envoyé depuis envoyer.html
+// Récupération du montant depuis envoyer.html
 const params = new URLSearchParams(window.location.search);
 const prix = params.get("prix") || 0;
 document.getElementById("montant").textContent = prix + " CFA";
 
-function payer() {
-    const mode = document.getElementById("mode").value;
-    const numero = document.getElementById("numero").value.trim();
-    const msg = document.getElementById("message");
+// Ton numéro marchand
+const numeroMarchand = "710344501";
 
-    if ((mode !== "agence") && numero.length < 8) {
-        msg.style.color = "red";
-        msg.textContent = "Veuillez entrer un numéro valide.";
+function afficherInfos() {
+    const mode = document.getElementById("mode").value;
+    const box = document.getElementById("infoPaiement");
+
+    if (mode === "agence") {
+        box.style.display = "block";
+        box.innerHTML = `
+            Rendez-vous dans un point relais pour effectuer votre paiement.
+        `;
         return;
     }
 
+    box.style.display = "block";
+    box.innerHTML = `
+        Envoyez <b>${prix} CFA</b> au numéro suivant :<br><br>
+        <b style="font-size:20px;">${numeroMarchand}</b><br><br>
+        Après le paiement, entrez votre numéro et le code de transaction.
+    `;
+}
+
+function payer() {
+    const mode = document.getElementById("mode").value;
+    const numero = document.getElementById("numero").value.trim();
+    const code = document.getElementById("code").value.trim();
+    const msg = document.getElementById("message");
+
+    if (mode !== "agence") {
+        if (numero.length < 8) {
+            msg.style.color = "red";
+            msg.textContent = "Veuillez entrer un numéro valide.";
+            return;
+        }
+        if (code.length < 4) {
+            msg.style.color = "red";
+            msg.textContent = "Veuillez entrer un code de transaction valide.";
+            return;
+        }
+    }
+
     msg.style.color = "#008000";
-    msg.textContent = "Paiement en cours… Vous serez contacté pour confirmation.";
+    msg.textContent = "Paiement reçu. Votre envoi sera confirmé sous peu.";
 }
 </script>
 
