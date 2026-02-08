@@ -5,16 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Suivi de colis – H.K Transport</title>
 
+    <!-- Leaflet (Carte OpenStreetMap) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
     <style>
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background: linear-gradient(to bottom, #ffb36b, #ffffff);
-            background-attachment: fixed;
+            background: #f7f7f7;
         }
 
         .container {
-            max-width: 700px;
+            max-width: 800px;
             margin: auto;
             padding: 20px;
         }
@@ -23,6 +26,7 @@
             text-align: center;
             font-size: 32px;
             margin-top: 20px;
+            color: #333;
         }
 
         input {
@@ -40,7 +44,7 @@
             font-size: 18px;
             border: none;
             border-radius: 10px;
-            background: #FF7A00;
+            background: #008000;
             color: white;
             font-weight: bold;
             margin-top: 15px;
@@ -48,7 +52,7 @@
         }
 
         button:hover {
-            background: #e56d00;
+            background: #006600;
         }
 
         .result {
@@ -64,71 +68,53 @@
             font-weight: bold;
             color: #333;
         }
-    </style>
-</head>
 
-<body>
-
-    <div class="container">
-
-        <h1>Suivi de colis</h1>
-
-        <input type="text" id="trackingNumber" placeholder="Entrez votre numéro de suivi (ex : HK12345)">
-        <button onclick="track()">Rechercher</button>
-
-        <div class="result" id="resultBox">
-            <p><span class="label">Numéro :</span> <span id="num"></span></p>
-            <p><span class="label">Statut :</span> <span id="status"></span></p>
-            <p><span class="label">Localisation :</span> <span id="location"></span></p>
-            <p><span class="label">Date d’envoi :</span> <span id="sent"></span></p>
-            <p><span class="label">Livraison estimée :</span> <span id="delivery"></span></p>
-        </div>
-
-    </div>
-
-    <script>
-        const colis = {
-            "HK12345": {
-                statut: "En transit",
-                localisation: "Thiès",
-                envoi: "02 Février 2026",
-                livraison: "05 Février 2026"
-            },
-            "HK98765": {
-                statut: "Livré",
-                localisation: "Dakar",
-                envoi: "28 Janvier 2026",
-                livraison: "29 Janvier 2026"
-            },
-            "HK55555": {
-                statut: "En préparation",
-                localisation: "Saint-Louis",
-                envoi: "07 Février 2026",
-                livraison: "10 Février 2026"
-            }
-        };
-
-        function track() {
-            const num = document.getElementById("trackingNumber").value.trim().toUpperCase();
-            const resultBox = document.getElementById("resultBox");
-
-            if (colis[num]) {
-                document.getElementById("num").textContent = num;
-                document.getElementById("status").textContent = colis[num].statut;
-                document.getElementById("location").textContent = colis[num].localisation;
-                document.getElementById("sent").textContent = colis[num].envoi;
-                document.getElementById("delivery").textContent = colis[num].livraison;
-            } else {
-                document.getElementById("num").textContent = num;
-                document.getElementById("status").textContent = "Numéro introuvable";
-                document.getElementById("location").textContent = "-";
-                document.getElementById("sent").textContent = "-";
-                document.getElementById("delivery").textContent = "-";
-            }
-
-            resultBox.style.display = "block";
+        /* Barre de progression */
+        .progress {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            position: relative;
         }
-    </script>
 
-</body>
-</html>
+        .progress::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 5%;
+            width: 90%;
+            height: 4px;
+            background: #ddd;
+            transform: translateY(-50%);
+        }
+
+        .step {
+            z-index: 2;
+            width: 22px;
+            height: 22px;
+            background: #ddd;
+            border-radius: 50%;
+            border: 3px solid white;
+        }
+
+        .step.active {
+            background: #008000;
+        }
+
+        /* Historique */
+        .timeline {
+            margin-top: 20px;
+            border-left: 3px solid #008000;
+            padding-left: 15px;
+        }
+
+        .event {
+            margin-bottom: 10px;
+        }
+
+        /* Carte */
+        #map {
+            height: 300px;
+            width: 100%;
+            margin-top: 20px;
+            border-radius: 12px;
