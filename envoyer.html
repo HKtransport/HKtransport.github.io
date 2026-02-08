@@ -157,10 +157,20 @@ function calculer() {
     // Option express
     if (option === "express") prix += 1500;
 
+    // Affichage du prix
     document.getElementById("resultat").innerHTML =
         "Prix total : <b>" + prix + " CFA</b>";
+
+    // Afficher le bouton de paiement
+    document.getElementById("btnPaiement").style.display = "block";
+
+    // Action du bouton
+    document.getElementById("btnPaiement").onclick = function() {
+        alert("Paiement en cours… (fonction à connecter)");
+    };
 }
 </script>
+
 
 </body>
 </html>
