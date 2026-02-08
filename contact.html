@@ -1,143 +1,100 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Contact – H.K Transport</title>
-
-<!-- Police moderne -->
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-
-<style>
-    body {
-        margin: 0;
-        font-family: 'Poppins', sans-serif;
-        background: #f5f5f5;
-    }
-
-    /* HEADER + MENU */
-    header {
-        background: #008000;
-        padding: 15px;
-        text-align: center;
-        color: white;
-        font-size: 22px;
-        font-weight: 600;
-    }
-
-    .top-contact {
-        font-size: 14px;
-        margin-bottom: 5px;
-    }
-
-    nav {
-        display: flex;
-        justify-content: center;
-        gap: 25px;
-        margin-top: 10px;
-    }
-
-    nav a {
-        color: white;
-        text-decoration: none;
-        font-weight: 600;
-    }
-
-    nav a:hover {
-        text-decoration: underline;
-    }
-
-    /* CARD */
-    .card {
-        background: white;
-        padding: 20px;
-        border-radius: 12px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        margin: 20px auto;
-        max-width: 800px;
-    }
-
-    input, textarea {
-        width: 100%;
-        padding: 15px;
-        border-radius: 10px;
-        border: 1px solid #ccc;
-        margin-top: 10px;
-        font-size: 16px;
-    }
-
-    button {
-        width: 100%;
-        padding: 15px;
-        font-size: 18px;
-        border: none;
-        border-radius: 10px;
-        background: #008000;
-        color: white;
-        font-weight: bold;
-        cursor: pointer;
-        margin-top: 15px;
-    }
-
-    button:hover {
-        background: #006600;
-    }
-
-    footer {
-        background: #004d00;
-        color: white;
-        padding: 20px;
-        text-align: center;
-        margin-top: 40px;
-    }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - H.K Transport</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f5f5f5;
+        }
+        header {
+            background: #008000;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+        }
+        .container {
+            padding: 20px;
+        }
+        label {
+            font-weight: bold;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0 15px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        textarea {
+            height: 120px;
+        }
+        .btn {
+            background: #008000;
+            color: white;
+            padding: 12px;
+            border: none;
+            width: 100%;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background: #006400;
+        }
+        .map-container {
+            margin-top: 30px;
+        }
+        iframe {
+            width: 100%;
+            height: 350px;
+            border: 0;
+            border-radius: 5px;
+        }
+    </style>
 </head>
-
 <body>
 
 <header>
-    <div class="top-contact">📞 +221 77 000 00 00</div>
-
-    Contact
-
-    <nav>
-        <a href="index.html">Accueil</a>
-        <a href="suivre.html">Suivre un colis</a>
-        <a href="envoyer.html">Envoyer un colis</a>
-        <a href="pointsrelais.html">Points relais</a>
-        <a href="contact.html">Contact</a>
-    </nav>
+    Contact - H.K Transport
 </header>
 
-<!-- FORMULAIRE DE CONTACT -->
-<div class="card">
+<div class="container">
+
     <h2>Envoyez-nous un message</h2>
 
-    <label>Nom</label>
-    <input type="text" placeholder="Votre nom">
+    <form>
+        <label>Nom</label>
+        <input type="text" placeholder="Votre nom" required>
 
-    <label>Email</label>
-    <input type="email" placeholder="Votre email">
+        <label>Email</label>
+        <input type="email" placeholder="Votre email" required>
 
-    <label>Message</label>
-    <textarea rows="5" placeholder="Votre message"></textarea>
+        <label>Message</label>
+        <textarea placeholder="Votre message" required></textarea>
 
-    <button onclick="alert('Votre message a été envoyé !')">Envoyer le message</button>
+        <button class="btn" type="submit">Envoyer le message</button>
+    </form>
+
+    <div class="map-container">
+        <h2>Notre emplacement</h2>
+
+        <!-- Carte Google Maps centrée sur Saint-Louis -->
+        <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31692.53291746494!2d-16.522!3d16.050!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xec17b4e3c0e8c8f%3A0x4c8f8f8d8e8f8f8f!2sSaint-Louis%2C%20S%C3%A9n%C3%A9gal!5e0!3m2!1sfr!2sfr!4v1700000000000"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+    </div>
+
 </div>
-
-<!-- CARTE GOOGLE MAPS -->
-<div class="card">
-    <h2>Notre emplacement</h2>
-    <iframe 
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3859.996!2d-17.4677!3d14.7167"
-        width="100%" height="300" style="border:0; border-radius:12px;" allowfullscreen="" loading="lazy">
-    </iframe>
-</div>
-
-<footer>
-    © 2024 H.K Transport – Tous droits réservés  
-    <br>📞 +221 77 000 00 00 — ✉ contact@hktransport.com
-</footer>
 
 </body>
 </html>
