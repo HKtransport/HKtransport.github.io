@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Suivi de colis – H.K Transport</title>
+
+<!-- Police moderne -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<!-- Leaflet (Carte OpenStreetMap) -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<style>
+    body { margin:0; font-family:'Poppins', sans-serif; background:#f5f5f5; }
+
+    /* HEADER + MENU */
+    header {
+        background:#008000;
+        padding:15px;
+        text-align:center;
+        color:white;
+        font-size:22px;
+        font-weight:600;
+    }
+
+    nav {
+        display:flex;
+        justify-content:center;
+        gap:25px;
+        margin-top:10px;
+    }
+
+    nav a {
+        color:white;
+        text-decoration:none;
+        font-weight:600;
+    }
+
+    nav a:hover { text-decoration:underline; }
+
+    /* CARD */
+    .card {
+        background:white;
+        padding:20px;
+        border-radius:12px;
+        box-shadow:0 4px 15px rgba(0,0,0,0.1);
+        margin:20px auto;
+        max-width:900px;
+    }
+
+    input {
+        width:100%;
+        padding:15px;
+        border-radius:10px;
+        border:1px solid #ccc;
+        margin-top:10px;
+        font-size:16px;
+    }
+
+    button {
+        width:100%;
+        padding:15px;
+        font-size:18px;
+        border:none;
+        border-radius:10px;
+        background:#008000;
+        color:white;
+        font-weight:bold;
+        cursor:pointer;
+        margin-top:15px;
+    }
+
+    button:hover { background:#006600; }
+
+    /* Progression */
+    .progress {
+        margin-top:20px;
+        display:flex;
+        justify-content:space-between;
+        position:relative;
+    }
+
+    .progress::before {
+        content:"";
+        position:absolute;
+        top:50%;
+        left:5%;
+        width:90%;
+        height:4px;
+        background:#ddd;
+        transform:translateY(-50%);
+    }
+
+    .step {
+        z-index:2;
+        width:22px;
+        height:22px;
+        background:#ddd;
+        border-radius:50%;
+        border:3px solid white;
+    }
+
+    .step.active { background:#008000; }
+
+    /* Historique */
+    .timeline {
+        margin-top:20px;
+        border-left:3px solid #008000;
+        padding-left:15px;
+    }
+
+    .event { margin-bottom:10px; }
+
+    /* Carte */
+    #map {
+        height:300px;
+        width:100%;
+        margin-top:20px;
+        border-radius:12px;
+    }
+
+    footer {
+        background:#004d00;
+        color:white;
+        padding:20px;
+        text-align:center;
+        margin-top:40px;
+    }
+</style>
+</head>
+
+<body>
+
+<header>
+    Suivi de colis
+    <nav>
+        <a href="index.html">Accueil</a>
+        <a href="suivre.html">Suivre un colis</a>
+        <a href="envoyer.html">Envoyer un colis</a>
+        <a href="pointsrelais.html">Points relais</a>
+        <a href="contact.html">Contact</a>
+    </nav>
+</header>
+
+<div class="card">
+    <h2>Rechercher un colis</h2>
+
+    <input type="text" id="trackingNumber" placeholder="Entrez votre numéro de suivi (ex : HK12345)">
+    <button onclick="track()">Rechercher</button>
+</div>
+
+<div class="card" id="resultBox" style="display:none;">
+    <h2>Informations du colis</h2>
+
+    <p><b>Numéro :</b> <span id="num"></span></p>
+    <p><b>Statut :</b> <span id="status"></span></p>
+    <p><b>Localisation :</b> <span id="location"></span></p>
+
+    <div class="progress">
+        <div class="step" id="s1"></div>
+        <div class="step" id="s2"></div>
+        <div class="step" id="s3"></div>
+        <div class="step" id="s4"></div>
+    </div>
+
+    <h3>Historique</h3>
+    <div class="timeline" id="history"></div>
+
+    <h3>Localisation sur la carte</h3>
+    <div id="map"></div>
+</div>
+
+<footer>
+    © 2024 H.K Transport – Tous droits réservés  
+    <br>📞 +221 77 000 00 00 — ✉ contact@hktransport.com
+</footer>
+
+<script>
+const colis = {
+    "HK12345": {
+        statut: "En transit",
+        localisation: "Thiès",
+        coords: [14.791, -16.925],
+        progression: 2,
+        historique: [
+            "02/02 – Colis déposé à Saint-Louis",
+            "03/02 – En transit vers Thiès",
+            "04/02 – Arrivé au centre de tri"
+        ]
+    },
+
+    "HK98765": {
+        statut: "Livré",
+        localisation: "Dakar",
+        coords: [14.7167, -17.4677],
+        progression: 4,
+        historique: [
+            "28/01 – Colis déposé à Thiès",
+            "29/01 – En transit",
+            "29/01 – Livré à Dakar"
+        ]
+    },
+
+    "HK55555": {
+        statut: "En préparation",
+        localisation: "Saint-Louis",
+        coords: [16.0179, -16.4896],
+        progression: 1,
+        historique: [
+            "07/02 – Colis enregistré",
+            "07/02 – En préparation"
+        ]
+    },
+
+    "HK20241": {
+        statut: "En transit",
+        localisation: "Kaolack",
+        coords: [14.147, -16.072],
+        progression: 2,
+        historique: [
+            "10/02 – Colis déposé à Dakar",
+            "11/02 – En transit vers Kaolack"
+        ]
+    },
+
+    "HK20242": {
+        statut: "En préparation",
+        localisation: "Dakar",
+        coords: [14.7167, -17.4677],
+        progression: 1,
+        historique: [
+            "10/02 – Colis enregistré",
+            "10/02 – En préparation à Dakar"
+        ]
+    },
+
+    "HK20243": {
+        statut: "Livré",
+        localisation: "Mbour",
+        coords: [14.419, -16.964],
+        progression: 4,
+        historique: [
+            "08/02 – Colis déposé à Thiès",
+            "09/02 – En transit",
+            "09/02 – Arrivé à Mbour",
+            "09/02 – Livré"
+        ]
+    },
+
+    "HK20244": {
+        statut: "En transit",
+        localisation: "Ziguinchor",
+        coords: [12.564, -16.273],
+        progression: 2,
+        historique: [
+            "09/02 – Colis déposé à Dakar",
+            "10/02 – En transit vers Ziguinchor"
+        ]
+    },
+
+    "HK20245": {
+        statut: "Arrivé au centre de tri",
+        localisation: "Thiès",
+        coords: [14.791, -16.925],
+        progression: 3,
+        historique: [
+            "09/02 – Colis déposé à Saint-Louis",
+            "10/02 – En transit",
+            "11/02 – Arrivé au centre de tri de Thiès"
+        ]
+    },
+
+    "HK20246": {
+        statut: "En livraison",
+        localisation: "Saint-Louis",
+        coords: [16.0179, -16.4896],
+        progression: 3,
+        historique: [
+            "08/02 – Colis déposé à Dakar",
+            "09/02 – En transit",
+            "10/02 – Arrivé à Saint-Louis",
+            "11/02 – En livraison"
+        ]
+    },
+
+    "HK20247": {
+        statut: "Enregistré",
+        localisation: "Dakar",
+        coords: [14.7167, -17.4677],
+        progression: 1,
+        historique: [
+            "11/02 – Colis enregistré"
+        ]
+    },
+
+    "HK20248": {
+        statut: "En transit",
+        localisation: "Louga",
+        coords: [15.618, -16.224],
+        progression: 2,
+        historique: [
+            "10/02 – Colis déposé à Dakar",
+            "11/02 – En transit vers Louga"
+        ]
+    },
+
+    "HK20249": {
+        statut: "Livré",
+        localisation: "Pikine",
+        coords: [14.764, -17.390],
+        progression: 4,
+        historique: [
+            "09/02 – Colis déposé à Thiès",
+            "10/02 – En transit",
+            "10/02 – Arrivé à Pikine",
+            "10/02 – Livré"
+        ]
+    },
+
+    "HK20250": {
+        statut: "En attente de prise en charge",
+        localisation: "Dakar",
+        coords: [14.7167, -17.4677],
+        progression: 1,
+        historique: [
+            "11/02 – Colis enregistré",
+            "11/02 – En attente de prise en charge"
+        ]
+    }
+};
+
+let map;
+
+function track() {
+    const num = document.getElementById("trackingNumber").value.trim().toUpperCase();
+    const resultBox = document.getElementById("resultBox");
+
+    if (!colis[num]) {
+        alert("Numéro introuvable");
+        return;
+    }
+
+    const data = colis[num];
+
+    document.getElementById("num").textContent = num;
+    document.getElementById("status").textContent = data.statut;
+    document.getElementById("location").textContent = data.localisation;
+
+    for (let i = 1; i <= 4; i++) {
+        document.getElementById("s" + i).classList.remove("active");
+    }
+    for (let i = 1; i <= data.progression; i++) {
+        document.getElementById("s" + i).classList.add("active");
+    }
+
+    const historyBox = document.getElementById("history");
+    historyBox.innerHTML = "";
+    data.historique.forEach(event => {
+        historyBox.innerHTML += `<div class="event">• ${event}</div>`;
+    });
+
+    if (!map) {
+        map = L.map('map').setView(data.coords, 10);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19
+        }).addTo(map);
+    } else {
+        map.setView(data.coords, 10);
+    }
+
+    L.marker(data.coords).addTo(map);
+
+    resultBox.style.display = "block";
+}
+</script>
+
+</body>
+</html>
