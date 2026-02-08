@@ -21,6 +21,11 @@
         font-weight:600;
     }
 
+    .top-contact {
+        font-size:14px;
+        margin-bottom:5px;
+    }
+
     nav {
         display:flex;
         justify-content:center;
@@ -83,7 +88,10 @@
 <body>
 
 <header>
+    <div class="top-contact">📞 +221 77 000 00 00</div>
+
     Envoyer un colis
+
     <nav>
         <a href="index.html">Accueil</a>
         <a href="suivre.html">Suivre un colis</a>
@@ -95,6 +103,10 @@
 
 <div class="card">
     <h2>Informations du colis</h2>
+
+    <p style="font-weight:600; color:#008000; margin-top:-5px;">
+        📞 Assistance : +221 77 000 00 00
+    </p>
 
     <label>Ville de départ</label>
     <select id="depart">
@@ -126,6 +138,11 @@
     <button onclick="calculer()">Calculer le prix</button>
 
     <h3 id="resultat" style="margin-top:20px;"></h3>
+
+    <!-- BOUTON DE PAIEMENT -->
+    <button id="btnPaiement" style="display:none; background:#004d00;">
+        Payer maintenant
+    </button>
 </div>
 
 <footer>
@@ -154,8 +171,18 @@ function calculer() {
     // Option express
     if (option === "express") prix += 1500;
 
+    // Affichage du prix
     document.getElementById("resultat").innerHTML =
         "Prix total : <b>" + prix + " CFA</b>";
+
+    // Afficher le bouton de paiement
+    const btn = document.getElementById("btnPaiement");
+    btn.style.display = "block";
+
+    // Action du bouton
+    btn.onclick = function() {
+        alert("Paiement en cours… (fonction à connecter)");
+    };
 }
 </script>
 
