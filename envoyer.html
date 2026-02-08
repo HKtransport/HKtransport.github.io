@@ -1,85 +1,163 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Envoyer un colis - H.K Transport</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background: #f5f5f5;
-        }
-        header {
-            background: #008000;
-            color: white;
-            padding: 15px;
-            text-align: center;
-            font-size: 22px;
-            font-weight: bold;
-        }
-        .container {
-            padding: 20px;
-        }
-        label {
-            font-weight: bold;
-        }
-        input, select {
-            width: 100%;
-            padding: 10px;
-            margin: 8px 0 15px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        .btn {
-            background: #008000;
-            color: white;
-            padding: 12px;
-            border: none;
-            width: 100%;
-            border-radius: 5px;
-            font-size: 18px;
-            cursor: pointer;
-        }
-        .btn:hover {
-            background: #006400;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Envoyer un colis – H.K Transport</title>
+
+<!-- Police moderne -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+    body { margin:0; font-family:'Poppins', sans-serif; background:#f5f5f5; }
+
+    /* HEADER + MENU */
+    header {
+        background:#008000;
+        padding:15px;
+        text-align:center;
+        color:white;
+        font-size:22px;
+        font-weight:600;
+    }
+
+    nav {
+        display:flex;
+        justify-content:center;
+        gap:25px;
+        margin-top:10px;
+    }
+
+    nav a {
+        color:white;
+        text-decoration:none;
+        font-weight:600;
+    }
+
+    nav a:hover { text-decoration:underline; }
+
+    /* CARD */
+    .card {
+        background:white;
+        padding:20px;
+        border-radius:12px;
+        box-shadow:0 4px 15px rgba(0,0,0,0.1);
+        margin:20px auto;
+        max-width:900px;
+    }
+
+    input, select {
+        width:100%;
+        padding:15px;
+        border-radius:10px;
+        border:1px solid #ccc;
+        margin-top:10px;
+        font-size:16px;
+    }
+
+    button {
+        width:100%;
+        padding:15px;
+        font-size:18px;
+        border:none;
+        border-radius:10px;
+        background:#008000;
+        color:white;
+        font-weight:bold;
+        cursor:pointer;
+        margin-top:15px;
+    }
+
+    button:hover { background:#006600; }
+
+    footer {
+        background:#004d00;
+        color:white;
+        padding:20px;
+        text-align:center;
+        margin-top:40px;
+    }
+</style>
 </head>
+
 <body>
 
 <header>
     Envoyer un colis
+    <nav>
+        <a href="index.html">Accueil</a>
+        <a href="suivre.html">Suivre un colis</a>
+        <a href="envoyer.html">Envoyer un colis</a>
+        <a href="pointsrelais.html">Points relais</a>
+        <a href="contact.html">Contact</a>
+    </nav>
 </header>
 
-<div class="container">
-    <form action="paiement.html" method="GET">
+<div class="card">
+    <h2>Informations du colis</h2>
 
-        <label>Nom de l'expéditeur</label>
-        <input type="text" name="expediteur" required>
+    <label>Ville de départ</label>
+    <select id="depart">
+        <option>Dakar</option>
+        <option>Thiès</option>
+        <option>Saint-Louis</option>
+        <option>Kaolack</option>
+        <option>Ziguinchor</option>
+    </select>
 
-        <label>Adresse de l'expéditeur</label>
-        <input type="text" name="adresse_expediteur" required>
+    <label>Ville d’arrivée</label>
+    <select id="arrivee">
+        <option>Dakar</option>
+        <option>Thiès</option>
+        <option>Saint-Louis</option>
+        <option>Kaolack</option>
+        <option>Ziguinchor</option>
+    </select>
 
-        <label>Nom du destinataire</label>
-        <input type="text" name="destinataire" required>
+    <label>Poids du colis (kg)</label>
+    <input type="number" id="poids" placeholder="Ex : 3">
 
-        <label>Adresse du destinataire</label>
-        <input type="text" name="adresse_destinataire" required>
+    <label>Option de livraison</label>
+    <select id="option">
+        <option value="normal">Livraison normale</option>
+        <option value="express">Express (+1500 CFA)</option>
+    </select>
 
-        <label>Poids du colis (kg)</label>
-        <input type="number" name="poids" min="1" required>
+    <button onclick="calculer()">Calculer le prix</button>
 
-        <label>Type de livraison</label>
-        <select name="livraison" required>
-            <option value="standard">Standard - 5€</option>
-            <option value="express">Express - 10€</option>
-        </select>
-
-        <button class="btn" type="submit">Continuer vers le paiement</button>
-    </form>
+    <h3 id="resultat" style="margin-top:20px;"></h3>
 </div>
+
+<footer>
+    © 2024 H.K Transport – Tous droits réservés  
+    <br>📞 +221 77 000 00 00 — ✉ contact@hktransport.com
+</footer>
+
+<script>
+function calculer() {
+    let depart = document.getElementById("depart").value;
+    let arrivee = document.getElementById("arrivee").value;
+    let poids = Number(document.getElementById("poids").value);
+    let option = document.getElementById("option").value;
+
+    if (poids <= 0) {
+        alert("Veuillez entrer un poids valide.");
+        return;
+    }
+
+    // Base : 1000 CFA + 500 CFA par kg
+    let prix = 1000 + poids * 500;
+
+    // Distance simple (bonus si villes différentes)
+    if (depart !== arrivee) prix += 1000;
+
+    // Option express
+    if (option === "express") prix += 1500;
+
+    document.getElementById("resultat").innerHTML =
+        "Prix total : <b>" + prix + " CFA</b>";
+}
+</script>
 
 </body>
 </html>
