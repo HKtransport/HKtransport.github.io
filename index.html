@@ -13,6 +13,22 @@
             background-attachment: fixed;
         }
 
+        /* 🇸🇳 Bandeau drapeau du Sénégal */
+        .bandeau-senegal {
+            width: 100%;
+            height: 12px;
+            display: flex;
+        }
+        .bandeau-senegal::before,
+        .bandeau-senegal::after,
+        .bandeau-senegal div {
+            content: "";
+            flex: 1;
+        }
+        .bandeau-senegal::before { background: #008000; }
+        .bandeau-senegal div { background: #FFD700; }
+        .bandeau-senegal::after { background: #D40000; }
+
         .container {
             max-width: 900px;
             margin: auto;
@@ -72,17 +88,16 @@
             box-shadow: 0 6px 20px rgba(0,0,0,0.15);
         }
 
-        /* 🇸🇳 Couleurs du drapeau du Sénégal */
-        .vert-senegal {
-            background: #d6f5d6; /* Vert pastel */
-        }
+        /* 🇸🇳 Couleurs du drapeau */
+        .vert-senegal { background: #d6f5d6; }
+        .jaune-senegal { background: #fff4cc; }
+        .rouge-senegal { background: #ffd6d6; }
 
-        .jaune-senegal {
-            background: #fff4cc; /* Jaune pastel */
-        }
-
-        .rouge-senegal {
-            background: #ffd6d6; /* Rouge pastel */
+        /* Icônes */
+        .icon {
+            font-size: 45px;
+            text-align: center;
+            margin-bottom: 10px;
         }
 
         .about {
@@ -106,6 +121,9 @@
 
 <body>
 
+    <!-- 🇸🇳 Bandeau drapeau -->
+    <div class="bandeau-senegal"><div></div></div>
+
     <div class="container">
 
         <!-- MENU -->
@@ -125,20 +143,20 @@
 
         <div class="cards">
 
-            <!-- 🟩 VERT -->
             <div class="card vert-senegal">
+                <div class="icon">📦</div>
                 <h3>Envoi de colis</h3>
                 <p>Envoyez vos colis rapidement partout au Sénégal.</p>
             </div>
 
-            <!-- 🟨 JAUNE -->
             <div class="card jaune-senegal">
+                <div class="icon">📍</div>
                 <h3>Suivi en ligne</h3>
                 <p>Suivez votre colis en temps réel depuis votre téléphone.</p>
             </div>
 
-            <!-- 🟥 ROUGE -->
             <div class="card rouge-senegal">
+                <div class="icon">🏪</div>
                 <h3>Points relais</h3>
                 <p>Déposez ou récupérez vos colis dans nos points relais au Sénégal.</p>
             </div>
