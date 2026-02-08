@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact – H.K Transport</title>
+
+<!-- Police moderne -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+    body {
+        margin: 0;
+        font-family: 'Poppins', sans-serif;
+        background: #f5f5f5;
+    }
+
+    /* HEADER + MENU */
+    header {
+        background: #008000;
+        padding: 15px;
+        text-align: center;
+        color: white;
+        font-size: 22px;
+        font-weight: 600;
+    }
+
+    .top-contact {
+        font-size: 14px;
+        margin-bottom: 5px;
+    }
+
+    nav {
+        display: flex;
+        justify-content: center;
+        gap: 25px;
+        margin-top: 10px;
+    }
+
+    nav a {
+        color: white;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    nav a:hover {
+        text-decoration: underline;
+    }
+
+    /* CARD */
+    .card {
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        margin: 20px auto;
+        max-width: 800px;
+    }
+
+    input, textarea {
+        width: 100%;
+        padding: 15px;
+        border-radius: 10px;
+        border: 1px solid #ccc;
+        margin-top: 10px;
+        font-size: 16px;
+    }
+
+    button {
+        width: 100%;
+        padding: 15px;
+        font-size: 18px;
+        border: none;
+        border-radius: 10px;
+        background: #008000;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 15px;
+    }
+
+    button:hover {
+        background: #006600;
+    }
+
+    footer {
+        background: #004d00;
+        color: white;
+        padding: 20px;
+        text-align: center;
+        margin-top: 40px;
+    }
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="top-contact">📞 +221 77 000 00 00</div>
+
+    Contact
+
+    <nav>
+        <a href="index.html">Accueil</a>
+        <a href="suivre.html">Suivre un colis</a>
+        <a href="envoyer.html">Envoyer un colis</a>
+        <a href="pointsrelais.html">Points relais</a>
+        <a href="contact.html">Contact</a>
+    </nav>
+</header>
+
+<!-- FORMULAIRE DE CONTACT -->
+<div class="card">
+    <h2>Envoyez-nous un message</h2>
+
+    <label>Nom</label>
+    <input type="text" placeholder="Votre nom">
+
+    <label>Email</label>
+    <input type="email" placeholder="Votre email">
+
+    <label>Message</label>
+    <textarea rows="5" placeholder="Votre message"></textarea>
+
+    <button onclick="alert('Votre message a été envoyé !')">Envoyer le message</button>
+</div>
+
+<!-- CARTE GOOGLE MAPS -->
+<div class="card">
+    <h2>Notre emplacement</h2>
+    <iframe 
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3859.996!2d-17.4677!3d14.7167"
+        width="100%" height="300" style="border:0; border-radius:12px;" allowfullscreen="" loading="lazy">
+    </iframe>
+</div>
+
+<footer>
+    © 2024 H.K Transport – Tous droits réservés  
+    <br>📞 +221 77 000 00 00 — ✉ contact@hktransport.com
+</footer>
+
+</body>
+</html>
