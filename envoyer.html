@@ -1,33 +1,82 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Envoyer un colis – H.K Transport</title>
+<meta charset="UTF-8">
+<title>Envoyer un colis – H.K Transport</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+    body { margin:0; font-family:'Poppins', sans-serif; background:#f5f5f5; }
+    header { background:#008000; padding:15px; text-align:center; color:white; font-size:22px; font-weight:600; }
+    .card { background:white; padding:20px; border-radius:12px; box-shadow:0 4px 15px rgba(0,0,0,0.1); margin:20px auto; max-width:800px; }
+    input, select { width:100%; padding:15px; border-radius:10px; border:1px solid #ccc; margin-top:10px; font-size:16px; }
+    button { width:100%; padding:15px; font-size:18px; border:none; border-radius:10px; background:#008000; color:white; font-weight:bold; cursor:pointer; margin-top:15px; }
+    button:hover { background:#006600; }
+</style>
 </head>
+
 <body>
-    <h1>Envoyer un colis</h1>
-    <p>Remplissez les informations ci-dessous pour envoyer un colis.</p>
 
-    <form>
-        <label>Nom de l’expéditeur :</label><br>
-        <input type="text"><br><br>
+<header>Envoyer un colis</header>
 
-        <label>Ville de départ :</label><br>
-        <input type="text"><br><br>
+<div class="card">
+    <h2>Informations du colis</h2>
 
-        <label>Nom du destinataire :</label><br>
-        <input type="text"><br><br>
+    <label>Ville de départ</label>
+    <select id="depart">
+        <option>Dakar</option>
+        <option>Thiès</option>
+        <option>Saint-Louis</option>
+        <option>Kaolack</option>
+        <option>Ziguinchor</option>
+    </select>
 
-        <label>Ville d’arrivée :</label><br>
-        <input type="text"><br><br>
+    <label>Ville d’arrivée</label>
+    <select id="arrivee">
+        <option>Dakar</option>
+        <option>Thiès</option>
+        <option>Saint-Louis</option>
+        <option>Kaolack</option>
+        <option>Ziguinchor</option>
+    </select>
 
-        <label>Numéro de téléphone :</label><br>
-        <input type="text"><br><br>
+    <label>Poids (kg)</label>
+    <input type="number" id="poids" placeholder="Ex : 3">
 
-        <button>Envoyer</button>
-    </form>
+    <label>Option</label>
+    <select id="option">
+        <option value="normal">Livraison normale</option>
+        <option value="express">Express (+1500 CFA)</option>
+    </select>
 
-    <p><a href="index.html">Retour à l’accueil</a></p>
+    <button onclick="calculer()">Calculer le prix</button>
+
+    <h3 id="resultat" style="margin-top:20px;"></h3>
+</div>
+
+<footer style="background:#004d00; color:white; padding:20px; text-align:center;">
+    © 2024 H.K Transport – Tous droits réservés
+</footer>
+
+<script>
+function calculer() {
+    let poids = Number(document.getElementById("poids").value);
+    let option = document.getElementById("option").value;
+
+    if (poids <= 0) {
+        alert("Veuillez entrer un poids valide.");
+        return;
+    }
+
+    let prix = 1000 + poids * 500;
+
+    if (option === "express") prix += 1500;
+
+    document.getElementById("resultat").innerHTML =
+        "Prix total : <b>" + prix + " CFA</b>";
+}
+</script>
+
 </body>
 </html>
