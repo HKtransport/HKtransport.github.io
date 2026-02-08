@@ -3,32 +3,133 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Suivre un colis – H.K Transport</title>
+    <title>Suivi de colis – H.K Transport</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom, #ffb36b, #ffffff);
+            background-attachment: fixed;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 32px;
+            margin-top: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            margin-top: 20px;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            border: none;
+            border-radius: 10px;
+            background: #FF7A00;
+            color: white;
+            font-weight: bold;
+            margin-top: 15px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #e56d00;
+        }
+
+        .result {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            display: none;
+        }
+
+        .label {
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
 </head>
+
 <body>
-    <h1>Suivre un colis</h1>
-    <p>Entrez votre numéro de suivi pour connaître le statut de votre colis.</p>
 
-    <input type="text" id="tracking" placeholder="Ex : HK12345">
-    <button onclick="suivre()">Suivre</button>
+    <div class="container">
 
-    <p id="resultat"></p>
+        <h1>Suivi de colis</h1>
+
+        <input type="text" id="trackingNumber" placeholder="Entrez votre numéro de suivi (ex : HK12345)">
+        <button onclick="track()">Rechercher</button>
+
+        <div class="result" id="resultBox">
+            <p><span class="label">Numéro :</span> <span id="num"></span></p>
+            <p><span class="label">Statut :</span> <span id="status"></span></p>
+            <p><span class="label">Localisation :</span> <span id="location"></span></p>
+            <p><span class="label">Date d’envoi :</span> <span id="sent"></span></p>
+            <p><span class="label">Livraison estimée :</span> <span id="delivery"></span></p>
+        </div>
+
+    </div>
 
     <script>
-        function suivre() {
-            let code = document.getElementById("tracking").value;
-
-            if(code === "") {
-                document.getElementById("resultat").innerHTML = "Veuillez entrer un numéro de suivi.";
-                return;
+        const colis = {
+            "HK12345": {
+                statut: "En transit",
+                localisation: "Thiès",
+                envoi: "02 Février 2026",
+                livraison: "05 Février 2026"
+            },
+            "HK98765": {
+                statut: "Livré",
+                localisation: "Dakar",
+                envoi: "28 Janvier 2026",
+                livraison: "29 Janvier 2026"
+            },
+            "HK55555": {
+                statut: "En préparation",
+                localisation: "Saint-Louis",
+                envoi: "07 Février 2026",
+                livraison: "10 Février 2026"
             }
+        };
 
-            // Exemple simple (à améliorer plus tard)
-            document.getElementById("resultat").innerHTML =
-                "Statut du colis " + code + " : En cours de traitement.";
+        function track() {
+            const num = document.getElementById("trackingNumber").value.trim();
+            const resultBox = document.getElementById("resultBox");
+
+            if (colis[num]) {
+                document.getElementById("num").textContent = num;
+                document.getElementById("status").textContent = colis[num].statut;
+                document.getElementById("location").textContent = colis[num].localisation;
+                document.getElementById("sent").textContent = colis[num].envoi;
+                document.getElementById("delivery").textContent = colis[num].livraison;
+
+                resultBox.style.display = "block";
+            } else {
+                resultBox.style.display = "block";
+                document.getElementById("num").textContent = num;
+                document.getElementById("status").textContent = "Numéro introuvable";
+                document.getElementById("location").textContent = "-";
+                document.getElementById("sent").textContent = "-";
+                document.getElementById("delivery").textContent = "-";
+            }
         }
     </script>
 
-    <p><a href="index.html">Retour à l’accueil</a></p>
 </body>
 </html>
