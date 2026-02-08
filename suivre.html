@@ -118,3 +118,95 @@
             width: 100%;
             margin-top: 20px;
             border-radius: 12px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Suivi de colis</h1>
+
+        <input type="text" id="trackingNumber" placeholder="Entrez votre numéro de suivi (ex : HK12345)">
+        <button onclick="track()">Rechercher</button>
+
+        <div class="result" id="resultBox">
+
+            <p><span class="label">Numéro :</span> <span id="num"></span></p>
+            <p><span class="label">Statut :</span> <span id="status"></span></p>
+            <p><span class="label">Localisation :</span> <span id="location"></span></p>
+
+            <!-- Barre de progression -->
+            <div class="progress">
+                <div class="step" id="s1"></div>
+                <div class="step" id="s2"></div>
+                <div class="step" id="s3"></div>
+                <div class="step" id="s4"></div>
+            </div>
+
+            <!-- Historique -->
+            <div class="timeline" id="history"></div>
+
+            <!-- Carte -->
+            <div id="map"></div>
+
+        </div>
+
+    </div>
+
+    <script>
+        const colis = {
+            "HK12345": {
+                statut: "En transit",
+                localisation: "Thiès",
+                coords: [14.791, -16.925],
+                progression: 2,
+                historique: [
+                    "02/02 – Colis déposé à Saint-Louis",
+                    "03/02 – En transit vers Thiès",
+                    "04/02 – Arrivé au centre de tri"
+                ]
+            },
+            "HK98765": {
+                statut: "Livré",
+                localisation: "Dakar",
+                coords: [14.7167, -17.4677],
+                progression: 4,
+                historique: [
+                    "28/01 – Colis déposé à Thiès",
+                    "29/01 – En transit",
+                    "29/01 – Livré à Dakar"
+                ]
+            },
+            "HK55555": {
+                statut: "En préparation",
+                localisation: "Saint-Louis",
+                coords: [16.0179, -16.4896],
+                progression: 1,
+                historique: [
+                    "07/02 – Colis enregistré",
+                    "07/02 – En préparation"
+                ]
+            }
+        };
+
+        let map;
+
+        function track() {
+            const num = document.getElementById("trackingNumber").value.trim().toUpperCase();
+            const resultBox = document.getElementById("resultBox");
+
+            if (!colis[num]) {
+                alert("Numéro introuvable");
+                return;
+            }
+
+            const data = colis[num];
+
+            document.getElementById("num").textContent = num;
+            document.getElementById("status").textContent = data.statut;
+            document.getElementById("location").textContent = data.localisation;
+
+            // Barre de progression
+            for (
