@@ -1,194 +1,109 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>H.K Transport – Livraison de colis au Sénégal</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>H.K Transport – Accueil</title>
 
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: linear-gradient(to bottom, #ffb36b, #ffffff);
-            background-attachment: fixed;
-        }
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
-        /* 🇸🇳 Bandeau drapeau du Sénégal */
-        .bandeau-senegal {
-            width: 100%;
-            height: 12px;
-            display: flex;
-        }
-        .bandeau-senegal::before,
-        .bandeau-senegal::after,
-        .bandeau-senegal div {
-            content: "";
-            flex: 1;
-        }
-        .bandeau-senegal::before { background: #008000; }
-        .bandeau-senegal div { background: #FFD700; }
-        .bandeau-senegal::after { background: #D40000; }
+<style>
+    body { margin:0; font-family:'Poppins', sans-serif; background:#f5f5f5; }
 
-        .container {
-            max-width: 900px;
-            margin: auto;
-            padding: 20px;
-        }
+    header {
+        background:#008000;
+        padding:15px;
+        text-align:center;
+        color:white;
+        font-size:22px;
+        font-weight:600;
+    }
 
-        nav {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            padding: 15px 0;
-        }
+    nav {
+        display:flex;
+        justify-content:center;
+        gap:25px;
+        margin-top:10px;
+    }
 
-        nav a {
-            text-decoration: none;
-            font-weight: bold;
-            color: #333;
-        }
+    nav a {
+        color:white;
+        text-decoration:none;
+        font-weight:600;
+    }
 
-        h1 {
-            text-align: center;
-            font-size: 40px;
-            font-weight: 900;
-            letter-spacing: 2px;
-            margin-top: 10px;
-        }
+    nav a:hover { text-decoration:underline; }
 
-        h1 span {
-            color: #FF7A00;
-        }
+    .hero {
+        text-align:center;
+        padding:60px 20px;
+        background:white;
+        margin:20px auto;
+        max-width:900px;
+        border-radius:12px;
+        box-shadow:0 4px 15px rgba(0,0,0,0.1);
+    }
 
-        h2 {
-            text-align: center;
-            margin-top: 50px;
-            color: #333;
-        }
+    .hero h1 {
+        font-size:36px;
+        color:#008000;
+        margin-bottom:10px;
+    }
 
-        .cards {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            flex-wrap: wrap;
-            margin-top: 20px;
-        }
+    .hero p {
+        font-size:18px;
+        color:#333;
+        margin-bottom:25px;
+    }
 
-        .card {
-            width: 250px;
-            padding: 20px;
-            border-radius: 12px;
-            border: 1px solid #ddd;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            transition: 0.3s;
-        }
+    .btn {
+        display:inline-block;
+        padding:15px 25px;
+        background:#008000;
+        color:white;
+        border-radius:10px;
+        font-size:18px;
+        font-weight:600;
+        text-decoration:none;
+    }
 
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-        }
+    .btn:hover { background:#006600; }
 
-        /* 🇸🇳 Couleurs du drapeau */
-        .vert-senegal { background: #d6f5d6; }
-        .jaune-senegal { background: #fff4cc; }
-        .rouge-senegal { background: #ffd6d6; }
-
-        /* Icônes */
-        .icon {
-            font-size: 45px;
-            text-align: center;
-            margin-bottom: 10px;
-        }
-
-        .about {
-            background: white;
-            padding: 25px;
-            border-radius: 12px;
-            border: 1px solid #ddd;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            margin-top: 20px;
-            line-height: 1.6;
-        }
-
-        footer {
-            text-align: center;
-            margin-top: 50px;
-            padding: 20px;
-            color: #555;
-        }
-    </style>
+    footer {
+        background:#004d00;
+        color:white;
+        padding:20px;
+        text-align:center;
+        margin-top:40px;
+    }
+</style>
 </head>
 
 <body>
 
-    <!-- 🇸🇳 Bandeau drapeau -->
-    <div class="bandeau-senegal"><div></div></div>
+<header>
+    H.K Transport
+    <nav>
+        <a href="index.html">Accueil</a>
+        <a href="suivre.html">Suivre un colis</a>
+        <a href="envoyer.html">Envoyer un colis</a>
+        <a href="pointsrelais.html">Points relais</a>
+        <a href="contact.html">Contact</a>
+    </nav>
+</header>
 
-    <div class="container">
+<div class="hero">
+    <h1>Bienvenue chez H.K Transport</h1>
+    <p>Votre partenaire fiable pour l’envoi, le suivi et la livraison de colis partout au Sénégal.</p>
 
-        <!-- MENU -->
-        <nav>
-            <a href="index.html">Accueil</a>
-            <a href="envoyer.html">Envoyer un colis</a>
-            <a href="suivre.html">Suivre un colis</a>
-            <a href="pointsrelais.html">Points relais</a>
-            <a href="contact.html">Contact</a>
-        </nav>
+    <a href="suivre.html" class="btn">Suivre un colis</a>
+    <a href="envoyer.html" class="btn" style="margin-left:10px;">Envoyer un colis</a>
+</div>
 
-        <!-- TITRE -->
-        <h1>HK <span>TRANSPORT</span></h1>
-
-        <!-- SERVICES -->
-        <h2>Nos services</h2>
-
-        <div class="cards">
-
-            <div class="card vert-senegal">
-                <div class="icon">📦</div>
-                <h3>Envoi de colis</h3>
-                <p>Envoyez vos colis rapidement partout au Sénégal.</p>
-            </div>
-
-            <div class="card jaune-senegal">
-                <div class="icon">📍</div>
-                <h3>Suivi en ligne</h3>
-                <p>Suivez votre colis en temps réel depuis votre téléphone.</p>
-            </div>
-
-            <div class="card rouge-senegal">
-                <div class="icon">🏪</div>
-                <h3>Points relais</h3>
-                <p>Déposez ou récupérez vos colis dans nos points relais au Sénégal.</p>
-            </div>
-
-        </div>
-
-        <!-- À PROPOS -->
-        <h2>À propos de H.K Transport</h2>
-
-        <div class="about">
-            <p>
-                H.K Transport est une entreprise spécialisée dans la livraison rapide et sécurisée de colis 
-                partout au Sénégal. Basée à Saint‑Louis, nous assurons des envois fiables vers toutes les régions 
-                du pays : Dakar, Thiès, Louga, Saint-Louis, et bien plus encore.
-            </p>
-
-            <p>
-                Notre mission est simple : offrir un service de transport accessible, efficace et transparent, 
-                avec un suivi en temps réel et des points relais proches de nos clients.
-            </p>
-
-            <p>
-                Avec H.K Transport, vos colis voyagent en toute confiance.
-            </p>
-        </div>
-
-        <!-- FOOTER -->
-        <footer>
-            © 2026 H.K Transport – Tous droits réservés
-        </footer>
-
-    </div>
+<footer>
+    © 2024 H.K Transport – Tous droits réservés  
+    <br>📞 +221 77 000 00 00 — ✉ contact@hktransport.com
+</footer>
 
 </body>
 </html>
