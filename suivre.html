@@ -109,7 +109,7 @@
         };
 
         function track() {
-            const num = document.getElementById("trackingNumber").value.trim();
+            const num = document.getElementById("trackingNumber").value.trim().toUpperCase();
             const resultBox = document.getElementById("resultBox");
 
             if (colis[num]) {
@@ -118,16 +118,15 @@
                 document.getElementById("location").textContent = colis[num].localisation;
                 document.getElementById("sent").textContent = colis[num].envoi;
                 document.getElementById("delivery").textContent = colis[num].livraison;
-
-                resultBox.style.display = "block";
             } else {
-                resultBox.style.display = "block";
                 document.getElementById("num").textContent = num;
                 document.getElementById("status").textContent = "Numéro introuvable";
                 document.getElementById("location").textContent = "-";
                 document.getElementById("sent").textContent = "-";
                 document.getElementById("delivery").textContent = "-";
             }
+
+            resultBox.style.display = "block";
         }
     </script>
 
