@@ -2,11 +2,11 @@ const CACHE_NAME = "baba-colis-cache-v1";
 const urlsToCache = [
   "index.html",
   "envoyer.html",
+  "paiement.html",
+  "confirmation.html",
   "suivre.html",
   "pointsrelais.html",
   "contact.html",
-  "confirmation.html",
-  "paiement.html",
   "manifest.json"
 ];
 
