@@ -44,7 +44,7 @@
         max-width:900px;
     }
 
-    input, select {
+    input {
         width:100%;
         padding:15px;
         border-radius:10px;
@@ -99,31 +99,10 @@
         <b id="montant" style="color:#008000;">0 CFA</b>
     </p>
 
-    <!-- FORMULAIRE PAYTECH -->
-    <form method="POST" action="https://paytech.sn/api/payment/request-payment">
+    <label>Montant à payer (en FCFA)</label>
+    <input type="number" id="amount" required>
 
-        <!-- Nom du service -->
-        <input type="hidden" name="item_name" value="Frais de livraison">
-
-        <!-- Montant variable -->
-        <label>Montant à payer (en FCFA)</label>
-        <input type="number" id="amount" name="item_price" required>
-
-        <!-- Devise -->
-        <input type="hidden" name="currency" value="XOF">
-
-        <!-- Référence unique -->
-        <input type="hidden" name="ref_command" id="ref">
-
-        <!-- Environnement PayTech -->
-        <input type="hidden" name="env" value="test">
-
-        <!-- URLs de redirection -->
-        <input type="hidden" name="success_url" value="https://tonsite.github.io/success.html">
-        <input type="hidden" name="cancel_url" value="https://tonsite.github.io/cancel.html">
-
-        <button type="submit">Payer maintenant</button>
-    </form>
+    <button onclick="payer()">Payer maintenant</button>
 </div>
 
 <footer>
@@ -133,17 +112,30 @@
 <script>
 // Récupération du montant depuis envoyer.html
 const params = new URLSearchParams(window.location.search);
-const prix = params.get("prix") || 0;
+const prix = parseInt(params.get("prix")) || 0;
+
 document.getElementById("montant").textContent = prix + " CFA";
 document.getElementById("amount").value = prix;
 
-// Génération d'une référence unique
-document.getElementById("ref").value = "BC-" + Date.now();
-</script>
+function payer() {
+    const montant = document.getElementById("amount").value;
 
-<script>
-if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("service-worker.js");
+    if (montant < 100) {
+        alert("Le montant doit être supérieur à 100 CFA.");
+        return;
+    }
+
+    const ref = "BC-" + Date.now();
+
+    // REDIRECTION DIRECTE PAYTECH (fonctionne sur GitHub Pages)
+    window.location.href =
+        "https://paytech.sn/payment?" +
+        "item_price=" + montant +
+        "&item_name=Frais%20de%20livraison" +
+        "&ref_command=" + ref +
+        "&currency=XOF" +
+        "&success_url=https://hktransport.github.io/success.html" +
+        "&cancel_url=https://hktransport.github.io/cancel.html";
 }
 </script>
 
