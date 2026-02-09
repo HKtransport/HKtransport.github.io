@@ -3,9 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Suivi de colis – H.K Transport</title>
+<title>Suivi de colis – Baba Colis</title>
+
 <!-- Lien du manifest pour l'application --> 
-    <link rel="manifest" href="manifest.json">
+<link rel="manifest" href="manifest.json">
+
 <!-- Police moderne -->
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
@@ -148,7 +150,7 @@
 <div class="card">
     <h2>Rechercher un colis</h2>
 
-    <input type="text" id="trackingNumber" placeholder="Entrez votre numéro de suivi (ex : HK12345)">
+    <input type="text" id="trackingNumber" placeholder="Entrez votre numéro de suivi (ex : BC12345)">
     <button onclick="track()">Rechercher</button>
 </div>
 
@@ -174,13 +176,13 @@
 </div>
 
 <footer>
-    © 2024 H.K Transport – Tous droits réservés  
+    © 2024 Baba Colis – Tous droits réservés  
     <br>📞 +221 77 000 00 00 — ✉ contact@hktransport.com
 </footer>
 
 <script>
 const colis = {
-    "HK12345": {
+    "BC12345": {
         statut: "En transit",
         localisation: "Thiès",
         coords: [14.791, -16.925],
@@ -192,7 +194,7 @@ const colis = {
         ]
     },
 
-    "HK98765": {
+    "BC98765": {
         statut: "Livré",
         localisation: "Dakar",
         coords: [14.7167, -17.4677],
@@ -204,7 +206,7 @@ const colis = {
         ]
     },
 
-    "HK55555": {
+    "BC55555": {
         statut: "En préparation",
         localisation: "Saint-Louis",
         coords: [16.0179, -16.4896],
@@ -215,7 +217,7 @@ const colis = {
         ]
     },
 
-    "HK20241": {
+    "BC20241": {
         statut: "En transit",
         localisation: "Kaolack",
         coords: [14.147, -16.072],
@@ -226,7 +228,7 @@ const colis = {
         ]
     },
 
-    "HK20242": {
+    "BC20242": {
         statut: "En préparation",
         localisation: "Dakar",
         coords: [14.7167, -17.4677],
@@ -237,7 +239,7 @@ const colis = {
         ]
     },
 
-    "HK20243": {
+    "BC20243": {
         statut: "Livré",
         localisation: "Mbour",
         coords: [14.419, -16.964],
@@ -250,7 +252,7 @@ const colis = {
         ]
     },
 
-    "HK20244": {
+    "BC20244": {
         statut: "En transit",
         localisation: "Ziguinchor",
         coords: [12.564, -16.273],
@@ -261,7 +263,7 @@ const colis = {
         ]
     },
 
-    "HK20245": {
+    "BC20245": {
         statut: "Arrivé au centre de tri",
         localisation: "Thiès",
         coords: [14.791, -16.925],
@@ -273,7 +275,7 @@ const colis = {
         ]
     },
 
-    "HK20246": {
+    "BC20246": {
         statut: "En livraison",
         localisation: "Saint-Louis",
         coords: [16.0179, -16.4896],
@@ -286,7 +288,7 @@ const colis = {
         ]
     },
 
-    "HK20247": {
+    "BC20247": {
         statut: "Enregistré",
         localisation: "Dakar",
         coords: [14.7167, -17.4677],
@@ -296,7 +298,7 @@ const colis = {
         ]
     },
 
-    "HK20248": {
+    "BC20248": {
         statut: "En transit",
         localisation: "Louga",
         coords: [15.618, -16.224],
@@ -307,7 +309,7 @@ const colis = {
         ]
     },
 
-    "HK20249": {
+    "BC20249": {
         statut: "Livré",
         localisation: "Pikine",
         coords: [14.764, -17.390],
@@ -320,7 +322,7 @@ const colis = {
         ]
     },
 
-    "HK20250": {
+    "BC20250": {
         statut: "En attente de prise en charge",
         localisation: "Dakar",
         coords: [14.7167, -17.4677],
@@ -374,6 +376,13 @@ function track() {
     L.marker(data.coords).addTo(map);
 
     resultBox.style.display = "block";
+}
+</script>
+
+<!-- Activation du service worker -->
+<script>
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("service-worker.js");
 }
 </script>
 
