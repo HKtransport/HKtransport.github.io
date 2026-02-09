@@ -3,9 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Confirmation – H.K Transport</title>
+<title>Confirmation – Baba Colis</title>
+
 <!-- Lien du manifest pour l'application --> 
-    <link rel="manifest" href="manifest.json">
+<link rel="manifest" href="manifest.json">
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
@@ -83,7 +84,7 @@
 </div>
 
 <footer>
-    © 2024 H.K Transport – Tous droits réservés  
+    © 2024 Baba Colis – Tous droits réservés  
     <br>📞 +221 77 000 00 00 — ✉ contact@hktransport.com
 </footer>
 
@@ -97,7 +98,7 @@ document.getElementById("code").textContent = params.get("code");
 
 // Génération du numéro de suivi
 function genererTracking() {
-    const prefix = "HK";
+    const prefix = "BC"; // HK → BC pour Baba Colis
     const rand = Math.floor(100000 + Math.random() * 900000);
     return prefix + rand;
 }
@@ -115,9 +116,15 @@ document.getElementById("btnWhatsapp").onclick = function() {
         "Code transaction : " + params.get("code") + "%0A" +
         "Numéro de suivi : " + tracking;
 
-    // Ton numéro WhatsApp
     window.location.href = "https://wa.me/221710344501?text=" + message;
 };
+</script>
+
+<!-- Activation du service worker -->
+<script>
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("service-worker.js");
+}
 </script>
 
 </body>
