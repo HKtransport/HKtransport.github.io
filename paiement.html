@@ -5,16 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Paiement – Baba Colis</title>
 
-<!-- Lien du manifest pour l'application --> 
 <link rel="manifest" href="manifest.json">
-
-<!-- Police moderne -->
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
     body { margin:0; font-family:'Poppins', sans-serif; background:#f5f5f5; }
 
-    /* HEADER + MENU */
     header {
         background:#008000;
         padding:15px;
@@ -22,11 +18,6 @@
         color:white;
         font-size:22px;
         font-weight:600;
-    }
-
-    .top-contact {
-        font-size:14px;
-        margin-bottom:5px;
     }
 
     nav {
@@ -44,7 +35,6 @@
 
     nav a:hover { text-decoration:underline; }
 
-    /* CARD */
     .card {
         background:white;
         padding:20px;
@@ -85,25 +75,13 @@
         text-align:center;
         margin-top:40px;
     }
-
-    .info-box {
-        background:#e8ffe8;
-        padding:15px;
-        border-radius:10px;
-        margin-top:15px;
-        border-left:5px solid #008000;
-        display:none;
-    }
 </style>
 </head>
 
 <body>
 
 <header>
-    <div class="top-contact">📞 +221 77 000 00 00</div>
-
     Paiement
-
     <nav>
         <a href="index.html">Accueil</a>
         <a href="suivre.html">Suivre un colis</a>
@@ -121,31 +99,35 @@
         <b id="montant" style="color:#008000;">0 CFA</b>
     </p>
 
-    <label>Mode de paiement</label>
-    <select id="mode" onchange="afficherInfos()">
-        <option value="wave">Wave</option>
-        <option value="om">Orange Money</option>
-        <option value="fm">Free Money</option>
-        <option value="agence">Paiement en agence</option>
-    </select>
+    <!-- FORMULAIRE PAYTECH -->
+    <form method="POST" action="https://paytech.sn/api/payment/request-payment">
 
-    <!-- Informations dynamiques -->
-    <div id="infoPaiement" class="info-box"></div>
+        <!-- Nom du service -->
+        <input type="hidden" name="item_name" value="Frais de livraison">
 
-    <label>Votre numéro de téléphone</label>
-    <input type="text" id="numero" placeholder="Ex : 77 123 45 67">
+        <!-- Montant variable -->
+        <label>Montant à payer (en FCFA)</label>
+        <input type="number" id="amount" name="amount" required>
 
-    <label>Code de transaction (Wave / OM / Free)</label>
-    <input type="text" id="code" placeholder="Ex : 123456">
+        <!-- Devise -->
+        <input type="hidden" name="currency" value="XOF">
 
-    <button onclick="payer()">Confirmer le paiement</button>
+        <!-- Référence unique -->
+        <input type="hidden" name="ref_command" id="ref">
 
-    <p id="message" style="margin-top:20px; font-weight:600;"></p>
+        <!-- Environnement -->
+        <input type="hidden" name="env" value="test">
+
+        <!-- URLs de redirection -->
+        <input type="hidden" name="success_url" value="https://tonsite.com/success.html">
+        <input type="hidden" name="cancel_url" value="https://tonsite.com/cancel.html">
+
+        <button type="submit">Payer maintenant</button>
+    </form>
 </div>
 
 <footer>
     © 2024 Baba Colis – Tous droits réservés  
-    <br>📞 +221 77 000 00 00 — ✉ contact@hktransport.com
 </footer>
 
 <script>
@@ -153,56 +135,12 @@
 const params = new URLSearchParams(window.location.search);
 const prix = params.get("prix") || 0;
 document.getElementById("montant").textContent = prix + " CFA";
+document.getElementById("amount").value = prix;
 
-// Ton numéro marchand
-const numeroMarchand = "710344501";
-
-function afficherInfos() {
-    const mode = document.getElementById("mode").value;
-    const box = document.getElementById("infoPaiement");
-
-    if (mode === "agence") {
-        box.style.display = "block";
-        box.innerHTML = `
-            Rendez-vous dans un point relais pour effectuer votre paiement.
-        `;
-        return;
-    }
-
-    box.style.display = "block";
-    box.innerHTML = `
-        Envoyez <b>${prix} CFA</b> au numéro suivant :<br><br>
-        <b style="font-size:20px;">${numeroMarchand}</b><br><br>
-        Après le paiement, entrez votre numéro et le code de transaction.
-    `;
-}
-
-function payer() {
-    const mode = document.getElementById("mode").value;
-    const numero = document.getElementById("numero").value.trim();
-    const code = document.getElementById("code").value.trim();
-
-    if (mode !== "agence") {
-        if (numero.length < 8) {
-            alert("Veuillez entrer un numéro valide.");
-            return;
-        }
-        if (code.length < 4) {
-            alert("Veuillez entrer un code de transaction valide.");
-            return;
-        }
-    }
-
-    // Redirection vers la page de confirmation
-    window.location.href =
-        "confirmation.html?prix=" + prix +
-        "&mode=" + mode +
-        "&numero=" + numero +
-        "&code=" + code;
-}
+// Génération d'une référence unique
+document.getElementById("ref").value = "BC-" + Date.now();
 </script>
 
-<!-- Activation du service worker -->
 <script>
 if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("service-worker.js");
