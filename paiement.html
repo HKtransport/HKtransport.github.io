@@ -95,18 +95,29 @@
     <h2>Paiement de votre envoi</h2>
 
     <p style="font-size:18px;">
-        Montant à payer :  
+        Montant à payer :
         <b id="montant" style="color:#008000;">0 CFA</b>
     </p>
 
-    <label>Montant à payer (en FCFA)</label>
-    <input type="number" id="amount" required>
+    <!-- FORMULAIRE QUI ENVOIE AU BACKEND PHP -->
+    <form method="POST" action="https://babacolis.wuaze.com/paytech.php">
 
-    <button onclick="payer()">Payer maintenant</button>
+        <!-- Nom du service -->
+        <input type="hidden" name="item_name" value="Frais de livraison">
+
+        <!-- Montant -->
+        <label>Montant à payer (en FCFA)</label>
+        <input type="number" id="amount" name="item_price" required>
+
+        <!-- Référence unique -->
+        <input type="hidden" id="ref" name="ref_command">
+
+        <button type="submit">Payer maintenant</button>
+    </form>
 </div>
 
 <footer>
-    © 2024 Baba Colis – Tous droits réservés  
+    © 2024 Baba Colis – Tous droits réservés
 </footer>
 
 <script>
@@ -114,29 +125,14 @@
 const params = new URLSearchParams(window.location.search);
 const prix = parseInt(params.get("prix")) || 0;
 
+// Affichage
 document.getElementById("montant").textContent = prix + " CFA";
+
+// Remplissage du formulaire
 document.getElementById("amount").value = prix;
 
-function payer() {
-    const montant = document.getElementById("amount").value;
-
-    if (montant < 100) {
-        alert("Le montant doit être supérieur à 100 CFA.");
-        return;
-    }
-
-    const ref = "BC-" + Date.now();
-
-    // REDIRECTION DIRECTE PAYTECH (fonctionne sur GitHub Pages)
-    window.location.href =
-        "https://paytech.sn/payment?" +
-        "item_price=" + montant +
-        "&item_name=Frais%20de%20livraison" +
-        "&ref_command=" + ref +
-        "&currency=XOF" +
-        "&success_url=https://hktransport.github.io/success.html" +
-        "&cancel_url=https://hktransport.github.io/cancel.html";
-}
+// Génération de la référence unique
+document.getElementById("ref").value = "BC-" + Date.now();
 </script>
 
 </body>
