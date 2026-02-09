@@ -107,7 +107,7 @@
 
         <!-- Montant variable -->
         <label>Montant à payer (en FCFA)</label>
-        <input type="number" id="amount" name="amount" required>
+        <input type="number" id="amount" name="item_price" required>
 
         <!-- Devise -->
         <input type="hidden" name="currency" value="XOF">
@@ -115,12 +115,12 @@
         <!-- Référence unique -->
         <input type="hidden" name="ref_command" id="ref">
 
-        <!-- Environnement -->
+        <!-- Environnement PayTech -->
         <input type="hidden" name="env" value="test">
 
         <!-- URLs de redirection -->
-        <input type="hidden" name="success_url" value="https://tonsite.com/success.html">
-        <input type="hidden" name="cancel_url" value="https://tonsite.com/cancel.html">
+        <input type="hidden" name="success_url" value="https://tonsite.github.io/success.html">
+        <input type="hidden" name="cancel_url" value="https://tonsite.github.io/cancel.html">
 
         <button type="submit">Payer maintenant</button>
     </form>
