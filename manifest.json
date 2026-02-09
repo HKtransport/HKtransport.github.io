@@ -1,7 +1,7 @@
 {
   "name": "Baba Colis",
   "short_name": "Baba Colis",
-  "description": "Application officielle de Baba Colis pour envoyer et suivre vos colis.",
+  "description": "Application officielle de Baba Colis pour envoyer, suivre et gérer vos colis.",
   "start_url": "index.html",
   "display": "standalone",
   "background_color": "#008000",
