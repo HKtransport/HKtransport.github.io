@@ -3,9 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Envoyer un colis – H.K Transport</title>
+<title>Envoyer un colis – Baba Colis</title>
+
 <!-- Lien du manifest pour l'application --> 
-    <link rel="manifest" href="manifest.json">
+<link rel="manifest" href="manifest.json">
 
 <!-- Police moderne -->
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
@@ -148,7 +149,7 @@
 </div>
 
 <footer>
-    © 2024 H.K Transport – Tous droits réservés  
+    © 2024 Baba Colis – Tous droits réservés  
     <br>📞 +221 77 000 00 00 — ✉ contact@hktransport.com
 </footer>
 
@@ -185,6 +186,13 @@ function calculer() {
     btn.onclick = function() {
         window.location.href = "paiement.html?prix=" + prix;
     };
+}
+</script>
+
+<!-- Activation du service worker -->
+<script>
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("service-worker.js");
 }
 </script>
 
