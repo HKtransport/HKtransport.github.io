@@ -1,159 +1,3 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Envoyer un colis – Baba Colis</title>
-
-<!-- Lien du manifest pour l'application --> 
-<link rel="manifest" href="manifest.json">
-
-<!-- Police moderne -->
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-
-<style>
-    body { margin:0; font-family:'Poppins', sans-serif; background:#f5f5f5; }
-
-    /* HEADER + MENU */
-    header {
-        background:#008000;
-        padding:15px;
-        text-align:center;
-        color:white;
-        font-size:22px;
-        font-weight:600;
-    }
-
-    .top-contact {
-        font-size:14px;
-        margin-bottom:5px;
-    }
-
-    nav {
-        display:flex;
-        justify-content:center;
-        gap:25px;
-        margin-top:10px;
-    }
-
-    nav a {
-        color:white;
-        text-decoration:none;
-        font-weight:600;
-    }
-
-    nav a:hover { text-decoration:underline; }
-
-    /* CARD */
-    .card {
-        background:white;
-        padding:20px;
-        border-radius:12px;
-        box-shadow:0 4px 15px rgba(0,0,0,0.1);
-        margin:20px auto;
-        max-width:900px;
-    }
-
-    input, select {
-        width:100%;
-        padding:15px;
-        border-radius:10px;
-        border:1px solid #ccc;
-        margin-top:10px;
-        font-size:16px;
-    }
-
-    button {
-        width:100%;
-        padding:15px;
-        font-size:18px;
-        border:none;
-        border-radius:10px;
-        background:#008000;
-        color:white;
-        font-weight:bold;
-        cursor:pointer;
-        margin-top:15px;
-    }
-
-    button:hover { background:#006600; }
-
-    footer {
-        background:#004d00;
-        color:white;
-        padding:20px;
-        text-align:center;
-        margin-top:40px;
-    }
-</style>
-</head>
-
-<body>
-
-<header>
-    <div class="top-contact">📞 +221 77 000 00 00</div>
-
-    Envoyer un colis
-
-    <nav>
-        <a href="index.html">Accueil</a>
-        <a href="suivre.html">Suivre un colis</a>
-        <a href="envoyer.html">Envoyer un colis</a>
-        <a href="pointsrelais.html">Points relais</a>
-        <a href="contact.html">Contact</a>
-    </nav>
-</header>
-
-<div class="card">
-    <h2>Informations du colis</h2>
-
-    <p style="font-weight:600; color:#008000; margin-top:-5px;">
-        📞 Assistance : +221 77 000 00 00
-    </p>
-
-    <label>Ville de départ</label>
-    <select id="depart">
-        <option>Dakar</option>
-        <option>Thiès</option>
-        <option>Saint-Louis</option>
-        <option>Kaolack</option>
-        <option>Ziguinchor</option>
-    </select>
-
-    <label>Ville d’arrivée</label>
-    <select id="arrivee">
-        <option>Dakar</option>
-        <option>Thiès</option>
-        <option>Saint-Louis</option>
-        <option>Kaolack</option>
-        <option>Ziguinchor</option>
-    </select>
-
-    <label>Poids du colis (kg)</label>
-    <input type="number" id="poids" placeholder="Ex : 3">
-
-    <label>Option de livraison</label>
-    <select id="option">
-        <option value="normal">Livraison normale</option>
-        <option value="express">Express (+1500 CFA)</option>
-    </select>
-
-    <button onclick="calculer()">Calculer le prix</button>
-
-    <h3 id="resultat" style="margin-top:20px;"></h3>
-
-    <!-- BOUTON DE PAIEMENT -->
-    <button id="btnPaiement" style="display:none; background:#004d00;">
-        Payer maintenant
-    </button>
-</div>
-
-<footer>
-    © 2024 Baba Colis – Tous droits réservés  
-    <br>📞 +221 77 000 00 00 — ✉ contact@hktransport.com
-</footer>
-
-<script>
 function calculer() {
     let depart = document.getElementById("depart").value;
     let arrivee = document.getElementById("arrivee").value;
@@ -165,36 +9,32 @@ function calculer() {
         return;
     }
 
-    // Base : 1000 CFA + 500 CFA par kg
-    let prix = 1000 + poids * 500;
+    // Prix du poids
+    let prixPoids = 500; // moins de 1kg = 500 CFA
 
-    // Distance simple (bonus si villes différentes)
-    if (depart !== arrivee) prix += 1000;
+    if (poids > 1) {
+        prixPoids = 500 + (Math.ceil(poids - 1) * 500);
+    }
+
+    // Prix fixe pour l'axe Saint-Louis → Dakar
+    const ordre = ["Saint-Louis", "Louga", "Thiès", "Dakar"];
+    let distance = Math.abs(ordre.indexOf(depart) - ordre.indexOf(arrivee));
+    let prixDistance = distance * 1500;
 
     // Option express
-    if (option === "express") prix += 1500;
+    let prixExpress = (option === "express") ? 1500 : 0;
 
-    // Affichage du prix
+    // Total
+    let prix = prixPoids + prixDistance + prixExpress;
+
+    // Affichage
     document.getElementById("resultat").innerHTML =
         "Prix total : <b>" + prix + " CFA</b>";
 
-    // Afficher le bouton de paiement
+    // Bouton paiement
     const btn = document.getElementById("btnPaiement");
     btn.style.display = "block";
-
-    // Redirection vers paiement.html
     btn.onclick = function() {
         window.location.href = "paiement.html?prix=" + prix;
     };
 }
-</script>
-
-<!-- Activation du service worker -->
-<script>
-if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("service-worker.js");
-}
-</script>
-
-</body>
-</html>
