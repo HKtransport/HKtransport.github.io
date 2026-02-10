@@ -77,19 +77,16 @@ function calculer() {
     let largeur = Number(document.getElementById("largeur").value);
     let hauteur = Number(document.getElementById("hauteur").value);
 
-    // Vérification poids
     if (poids <= 0) {
         alert("Veuillez entrer un poids valide.");
         return;
     }
 
-    // Vérification dimensions max
     if (longueur > 110 || largeur > 110 || hauteur > 110) {
         alert("Dimensions trop grandes. Maximum autorisé : 110 cm.");
         return;
     }
 
-    // Axe officiel
     const ordre = [
         "Saint-Louis",
         "Louga",
@@ -101,29 +98,23 @@ function calculer() {
         "Dakar"
     ];
 
-    // Distance en nombre de villes
     let distance = Math.abs(ordre.indexOf(depart) - ordre.indexOf(arrivee));
 
-    // Prix distance
     let prixDistance = 0;
     if (distance > 0) {
         prixDistance = 1000 + (distance - 1) * 500;
     }
 
-    // Prix poids
     let prixPoids = 500;
     if (poids > 1) {
         prixPoids = 500 + (Math.ceil(poids - 1) * 500);
     }
 
-    // Supplément dimensions
     let prixDimensions = 0;
-
     if (longueur > 30) prixDimensions += 350;
     if (largeur > 30) prixDimensions += 350;
     if (hauteur > 30) prixDimensions += 350;
 
-    // Total
     let prix = prixDistance + prixPoids + prixDimensions;
 
     document.getElementById("resultat").innerHTML =
@@ -131,8 +122,20 @@ function calculer() {
 
     const btn = document.getElementById("btnPaiement");
     btn.style.display = "block";
+
+    // 🔥 ENVOI COMPLET DES DONNÉES 🔥
     btn.onclick = function() {
-        window.location.href = "paiement.html?prix=" + prix;
+        const params = new URLSearchParams({
+            prix: prix,
+            depart: depart,
+            arrivee: arrivee,
+            poids: poids,
+            longueur: longueur,
+            largeur: largeur,
+            hauteur: hauteur
+        });
+
+        window.location.href = "paiement.html?" + params.toString();
     };
 }
 </script>
