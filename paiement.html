@@ -10,28 +10,56 @@
     .card { background:white; padding:20px; border-radius:10px; max-width:600px; margin:20px auto; }
     button { width:100%; padding:15px; background:#008000; color:white; border:none; border-radius:8px; font-size:18px; cursor:pointer; }
     button:hover { background:#006600; }
+    p { margin:8px 0; }
 </style>
 </head>
 
 <body>
 
 <div class="card">
-    <h2>Paiement sécurisé</h2>
+    <h2>Récapitulatif du colis</h2>
 
-    <p id="prix"></p>
+    <p id="recap"></p>
 
-    <button onclick="payer()">Payer avec PayTech</button>
+    <form action="paytech.php" method="POST">
+        <input type="hidden" name="prix" id="prixInput">
+        <input type="hidden" name="depart" id="departInput">
+        <input type="hidden" name="arrivee" id="arriveeInput">
+        <input type="hidden" name="poids" id="poidsInput">
+        <input type="hidden" name="longueur" id="longueurInput">
+        <input type="hidden" name="largeur" id="largeurInput">
+        <input type="hidden" name="hauteur" id="hauteurInput">
+
+        <button type="submit">Payer avec PayTech</button>
+    </form>
 </div>
 
 <script>
-const urlParams = new URLSearchParams(window.location.search);
-const prix = urlParams.get("prix");
+const params = new URLSearchParams(window.location.search);
 
-document.getElementById("prix").innerHTML = "Montant à payer : <b>" + prix + " CFA</b>";
+const prix = params.get("prix");
+const depart = params.get("depart");
+const arrivee = params.get("arrivee");
+const poids = params.get("poids");
+const longueur = params.get("longueur");
+const largeur = params.get("largeur");
+const hauteur = params.get("hauteur");
 
-function payer() {
-    window.location.href = "https://paytech.sn"; 
-}
+document.getElementById("recap").innerHTML = `
+    <b>Montant :</b> ${prix} CFA<br>
+    <b>De :</b> ${depart}<br>
+    <b>À :</b> ${arrivee}<br>
+    <b>Poids :</b> ${poids} kg<br>
+    <b>Dimensions :</b> ${longueur} x ${largeur} x ${hauteur} cm
+`;
+
+document.getElementById("prixInput").value = prix;
+document.getElementById("departInput").value = depart;
+document.getElementById("arriveeInput").value = arrivee;
+document.getElementById("poidsInput").value = poids;
+document.getElementById("longueurInput").value = longueur;
+document.getElementById("largeurInput").value = largeur;
+document.getElementById("hauteurInput").value = hauteur;
 </script>
 
 </body>
