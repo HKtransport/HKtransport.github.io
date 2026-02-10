@@ -100,15 +100,9 @@ function calculer() {
 
     let distance = Math.abs(ordre.indexOf(depart) - ordre.indexOf(arrivee));
 
-    let prixDistance = 0;
-    if (distance > 0) {
-        prixDistance = 1000 + (distance - 1) * 500;
-    }
+    let prixDistance = distance > 0 ? 1000 + (distance - 1) * 500 : 0;
 
-    let prixPoids = 500;
-    if (poids > 1) {
-        prixPoids = 500 + (Math.ceil(poids - 1) * 500);
-    }
+    let prixPoids = poids > 1 ? 500 + (Math.ceil(poids - 1) * 500) : 500;
 
     let prixDimensions = 0;
     if (longueur > 30) prixDimensions += 350;
