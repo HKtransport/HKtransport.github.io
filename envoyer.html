@@ -9,12 +9,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
-    html, body {
+    body {
         margin:0;
         padding:0;
-        width:100%;
-        max-width:100%;
-        overflow-x:hidden;
         font-family:'Poppins', sans-serif;
         background:#f5f5f5;
     }
@@ -110,52 +107,24 @@
     <label>Ville de départ</label>
     <select id="depart">
         <option>Saint-Louis</option>
-        <option>UGB</option>
-        <option>Gandon</option>
-        <option>Ngalléle</option>
-        <option>Mpal</option>
-
-        <option>Ngoumba</option>
-        <option>Ngéwoul</option>
         <option>Louga</option>
-
+        <option>Guéoul</option>
         <option>Kébémer</option>
-        <option>Tivaouane</option>
-        <option>Tiavaoune</option>
-        <option>Pire</option>
         <option>Mékhé</option>
+        <option>Tivaouane</option>
         <option>Thiès</option>
-
-        <option>Rufisque</option>
-        <option>Pikine</option>
-        <option>Liberté 6 extension</option>
-        <option>UCAD</option>
         <option>Dakar</option>
     </select>
 
     <label>Ville d’arrivée</label>
     <select id="arrivee">
         <option>Saint-Louis</option>
-        <option>UGB</option>
-        <option>Gandon</option>
-        <option>Ngalléle</option>
-        <option>Mpal</option>
-
-        <option>Ngoumba</option>
-        <option>Ngéwoul</option>
         <option>Louga</option>
-
+        <option>Guéoul</option>
         <option>Kébémer</option>
-        <option>Tivaouane</option>
-        <option>Tiavaoune</option>
-        <option>Pire</option>
         <option>Mékhé</option>
+        <option>Tivaouane</option>
         <option>Thiès</option>
-
-        <option>Rufisque</option>
-        <option>Pikine</option>
-        <option>Liberté 6 extension</option>
-        <option>UCAD</option>
         <option>Dakar</option>
     </select>
 
@@ -193,26 +162,15 @@ function calculer() {
         return;
     }
 
-    // Liste des localités dans l'ordre réel du trajet
+    // Liste des villes dans l'ordre réel du trajet
     const ordre = [
         "Saint-Louis",
-        "UGB",
-        "Gandon",
-        "Ngalléle",
-        "Mpal",
-        "Ngoumba",
-        "Ngéwoul",
         "Louga",
+        "Guéoul",
         "Kébémer",
-        "Tivaouane",
-        "Tiavaoune",
-        "Pire",
         "Mékhé",
+        "Tivaouane",
         "Thiès",
-        "Rufisque",
-        "Pikine",
-        "Liberté 6 extension",
-        "UCAD",
         "Dakar"
     ];
 
