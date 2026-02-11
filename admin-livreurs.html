@@ -89,9 +89,9 @@ function logout() {
     window.location.href = "login.html";
 }
 
-// Charger les livreurs depuis GitHub Pages
+// Charger les livreurs depuis InfinityFree via PROXY
 function loadLivreurs() {
-    fetch("livreurs.json")
+    fetch("https://babacolis.wuaze.com/get_livreurs_proxy.php")
         .then(res => res.json())
         .then(data => {
             const tbody = document.querySelector("#tableLivreurs tbody");
@@ -130,10 +130,12 @@ function addLivreur() {
 
     if (!nom) return;
 
+    const body = new URLSearchParams();
+    body.append("nom", nom);
+
     fetch("https://babacolis.wuaze.com/add_livreur.php", {
         method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: "nom=" + encodeURIComponent(nom)
+        body: body
     })
     .then(res => res.json())
     .then(data => {
