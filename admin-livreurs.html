@@ -84,9 +84,9 @@ function logout() {
     window.location.href = "login.html";
 }
 
-// Charger les livreurs
+// Charger les livreurs (VERSION CORS)
 function loadLivreurs() {
-    fetch("https://babacolis.wuaze.com/livreurs.json")
+    fetch("https://babacolis.wuaze.com/get_livreurs.php")
         .then(res => res.json())
         .then(data => {
             const tbody = document.querySelector("#tableLivreurs tbody");
@@ -110,6 +110,10 @@ function loadLivreurs() {
                     </tr>
                 `;
             });
+        })
+        .catch(err => {
+            console.error("Erreur chargement livreurs :", err);
+            alert("Impossible de charger les livreurs (CORS).");
         });
 }
 
