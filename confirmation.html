@@ -3,128 +3,86 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Confirmation – Baba Colis</title>
-
-<!-- Lien du manifest pour l'application --> 
-<link rel="manifest" href="manifest.json">
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<title>Commande confirmée – Baba Colis</title>
 
 <style>
-    body { margin:0; font-family:'Poppins', sans-serif; background:#f5f5f5; }
-
-    header {
-        background:#008000;
-        padding:15px;
-        text-align:center;
-        color:white;
-        font-size:22px;
-        font-weight:600;
+    body {
+        font-family: Arial, sans-serif;
+        background: #f5f5f5;
+        margin: 0;
+        padding: 0;
     }
-
-    .card {
-        background:white;
-        padding:20px;
-        border-radius:12px;
-        box-shadow:0 4px 15px rgba(0,0,0,0.1);
-        margin:20px auto;
-        max-width:900px;
+    .container {
+        max-width: 600px;
+        margin: 40px auto;
+        background: white;
+        padding: 25px;
+        border-radius: 12px;
+        text-align: center;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
-
-    .tracking {
-        font-size:22px;
-        color:#008000;
-        font-weight:600;
+    h1 {
+        color: #008000;
+        margin-bottom: 10px;
     }
-
+    p {
+        font-size: 16px;
+        margin: 10px 0;
+    }
+    .numero {
+        font-size: 20px;
+        font-weight: bold;
+        color: #333;
+        margin: 15px 0;
+    }
     button {
-        width:100%;
-        padding:15px;
-        font-size:18px;
-        border:none;
-        border-radius:10px;
-        background:#008000;
-        color:white;
-        font-weight:bold;
-        cursor:pointer;
-        margin-top:15px;
+        margin-top: 20px;
+        padding: 15px;
+        width: 100%;
+        background: #008000;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 18px;
+        cursor: pointer;
     }
-
-    button:hover { background:#006600; }
-
-    footer {
-        background:#004d00;
-        color:white;
-        padding:20px;
-        text-align:center;
-        margin-top:40px;
+    button:hover {
+        background: #006600;
     }
 </style>
 </head>
 
 <body>
 
-<header>Confirmation du paiement</header>
+<div class="container">
+    <h1>Commande confirmée</h1>
 
-<div class="card">
-    <h2>Paiement confirmé ✔</h2>
+    <p>Merci d’avoir choisi <b>Baba Colis</b> pour votre envoi.</p>
 
-    <p>Merci pour votre confiance. Voici les détails de votre transaction :</p>
+    <p>Votre numéro de colis est :</p>
 
-    <p><b>Montant payé :</b> <span id="montant"></span></p>
-    <p><b>Mode de paiement :</b> <span id="mode"></span></p>
-    <p><b>Votre numéro :</b> <span id="numero"></span></p>
-    <p><b>Code de transaction :</b> <span id="code"></span></p>
+    <div class="numero" id="numColis"></div>
 
-    <hr>
+    <p>Un agent vous contactera pour finaliser la prise en charge.</p>
 
-    <p class="tracking">Numéro de suivi : <span id="tracking"></span></p>
-
-    <button id="btnWhatsapp">Envoyer sur WhatsApp</button>
+    <button onclick="window.location.href='index.html'">
+        Retour à l’accueil
+    </button>
 </div>
 
-<footer>
-    © 2024 Baba Colis – Tous droits réservés  
-    <br>📞 +221 77 000 00 00 — ✉ contact@hktransport.com
-</footer>
-
 <script>
-// Récupération des données envoyées depuis paiement.html
-const params = new URLSearchParams(window.location.search);
-document.getElementById("montant").textContent = params.get("prix") + " CFA";
-document.getElementById("mode").textContent = params.get("mode");
-document.getElementById("numero").textContent = params.get("numero");
-document.getElementById("code").textContent = params.get("code");
+// Génération automatique d’un numéro de colis
+function genererNumero() {
+    const date = new Date();
+    const y = date.getFullYear();
+    const m = String(date.getMonth()+1).padStart(2, '0');
+    const d = String(date.getDate()).padStart(2, '0');
+    const random = Math.floor(100000 + Math.random() * 900000);
 
-// Génération du numéro de suivi
-function genererTracking() {
-    const prefix = "BC"; // HK → BC pour Baba Colis
-    const rand = Math.floor(100000 + Math.random() * 900000);
-    return prefix + rand;
+    return `BC-${y}${m}${d}-${random}`;
 }
 
-const tracking = genererTracking();
-document.getElementById("tracking").textContent = tracking;
-
-// Envoi WhatsApp
-document.getElementById("btnWhatsapp").onclick = function() {
-    const message =
-        "Bonjour, j’ai effectué un paiement pour un envoi de colis.%0A" +
-        "Montant : " + params.get("prix") + " CFA%0A" +
-        "Mode : " + params.get("mode") + "%0A" +
-        "Numéro : " + params.get("numero") + "%0A" +
-        "Code transaction : " + params.get("code") + "%0A" +
-        "Numéro de suivi : " + tracking;
-
-    window.location.href = "https://wa.me/221710344501?text=" + message;
-};
-</script>
-
-<!-- Activation du service worker -->
-<script>
-if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("service-worker.js");
-}
+document.getElementById("numColis").textContent = genererNumero();
 </script>
 
 </body>
