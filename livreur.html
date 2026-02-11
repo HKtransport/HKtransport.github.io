@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Livreur – Scan QR</title>
+<title>Espace Livreur – Baba Colis</title>
 
-<!-- Scanner QR -->
 <script src="https://unpkg.com/html5-qrcode"></script>
 
 <style>
@@ -51,28 +50,24 @@
 
 <body>
 
-<!-- 🔐 PROTECTION LIVREUR -->
 <script>
 if (localStorage.getItem("livreur") !== "ok") {
-    window.location.href = "livreur-login.html";
+    window.location.href = "livreur-password-login.html";
 }
 </script>
 
-<h1>Module Livreur – Scan QR</h1>
+<h1>Espace Livreur – Baba Colis</h1>
 
 <button class="logout" onclick="logout()">Déconnexion</button>
 
-<!-- Scanner QR -->
 <div id="reader"></div>
 
-<!-- Champs auto-remplis -->
 <input type="text" id="numero" placeholder="Numéro du colis (scan)">
 <select id="statut">
     <option value="En livraison">En livraison</option>
     <option value="Livré">Livré</option>
 </select>
 
-<!-- Localisation automatique -->
 <input type="text" id="localisation" placeholder="Localisation (auto)">
 <button onclick="getLocation()">📍 Localisation automatique</button>
 
@@ -81,13 +76,13 @@ if (localStorage.getItem("livreur") !== "ok") {
 <button onclick="updateColis()">Mettre à jour</button>
 
 <script>
-// 🔐 Déconnexion
 function logout() {
     localStorage.removeItem("livreur");
-    window.location.href = "livreur-login.html";
+    localStorage.removeItem("livreur_id");
+    localStorage.removeItem("livreur_nom");
+    window.location.href = "livreur-password-login.html";
 }
 
-// 📱 SCAN QR CODE
 function onScanSuccess(decodedText) {
     document.getElementById("numero").value = decodedText;
 }
@@ -95,7 +90,6 @@ function onScanSuccess(decodedText) {
 new Html5QrcodeScanner("reader", { fps: 10, qrbox: 250 })
     .render(onScanSuccess);
 
-// 🌍 GÉOLOCALISATION AUTOMATIQUE
 function getLocation() {
     if (!navigator.geolocation) {
         alert("La géolocalisation n'est pas supportée par ce téléphone.");
@@ -114,12 +108,12 @@ function getLocation() {
     );
 }
 
-// 🚚 MISE À JOUR DU COLIS
 function updateColis() {
     const numero = document.getElementById("numero").value;
     const statut = document.getElementById("statut").value;
     const localisation = document.getElementById("localisation").value;
     const historique = document.getElementById("historique").value;
+    const livreurNom = localStorage.getItem("livreur_nom") || "";
 
     if (numero.trim() === "") {
         alert("Scanne un colis d'abord.");
@@ -133,7 +127,7 @@ function updateColis() {
             numero: numero,
             statut: statut,
             localisation: localisation,
-            historique: historique
+            historique: historique !== "" ? (`[${livreurNom}] ` + historique) : ""
         })
     })
     .then(res => res.json())
