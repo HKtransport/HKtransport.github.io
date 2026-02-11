@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Livreur – Scan QR</title>
+
+<script src="https://unpkg.com/html5-qrcode"></script>
+
+<style>
+    body { font-family: Arial; padding:20px; background:#f5f5f5; }
+    h1 { color:#008000; text-align:center; }
+    #reader { width:300px; margin:auto; }
+    input, select {
+        width:100%; padding:12px; margin-top:10px;
+        border-radius:8px; border:1px solid #ccc;
+    }
+    button {
+        width:100%; padding:12px; margin-top:15px;
+        background:#008000; color:white;
+        border:none; border-radius:8px;
+        cursor:pointer; font-size:16px;
+    }
+</style>
+</head>
+
+<body>
+
+<h1>Module Livreur – Scan QR</h1>
+
+<div id="reader"></div>
+
+<input type="text" id="numero" placeholder="Numéro du colis (scan)">
+<select id="statut">
+    <option value="En livraison">En livraison</option>
+    <option value="Livré">Livré</option>
+</select>
+<input type="text" id="localisation" placeholder="Localisation (ex: Dakar)">
+<textarea id="historique" placeholder="Note livreur (optionnel)"></textarea>
+
+<button onclick="updateColis()">Mettre à jour</button>
+
+<script>
+// Scanner QR
+function onScanSuccess(decodedText) {
+    document.getElementById("numero").value = decodedText;
+}
+
+new Html5QrcodeScanner("reader", { fps: 10, qrbox: 250 })
+    .render(onScanSuccess);
+
+// Mise à jour colis
+function updateColis() {
+    const numero = document.getElementById("numero").value;
+    const statut = document.getElementById("statut").value;
+    const localisation = document.getElementById("localisation").value;
+    const historique = document.getElementById("historique").value;
+
+    fetch("https://babacolis.wuaze.com/update_colis.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            numero: numero,
+            statut: statut,
+            localisation: localisation,
+            historique: historique
+        })
+    })
+    .then(res => res.json())
+    .then(() => {
+        alert("Colis mis à jour !");
+    });
+}
+</script>
+
+</body>
+</html>
