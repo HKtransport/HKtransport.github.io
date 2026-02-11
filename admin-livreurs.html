@@ -124,7 +124,7 @@ function loadLivreurs() {
 
 loadLivreurs();
 
-// Ajouter un livreur
+// Ajouter un livreur (VERSION COMPATIBLE INFINITYFREE)
 function addLivreur() {
     const nom = prompt("Nom du nouveau livreur :");
 
@@ -132,8 +132,8 @@ function addLivreur() {
 
     fetch("https://babacolis.wuaze.com/add_livreur.php", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nom: nom })
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: "nom=" + encodeURIComponent(nom)
     })
     .then(res => res.json())
     .then(data => {
