@@ -51,21 +51,41 @@
 
 <div class="box">
     <h2>Connexion Livreur</h2>
-    <input type="password" id="pass" placeholder="Mot de passe livreur">
+    <input type="text" id="code" placeholder="Code temporaire">
     <button onclick="login()">Se connecter</button>
 </div>
 
 <script>
 function login() {
-    const mdp = "Livreur2024"; // 🔐 Mot de passe livreur
-    const input = document.getElementById("pass").value;
+    const code = document.getElementById("code").value.trim();
 
-    if (input === mdp) {
-        localStorage.setItem("livreur", "ok");
-        window.location.href = "livreur.html";
-    } else {
-        alert("Mot de passe incorrect");
+    if (code === "") {
+        alert("Entre ton code temporaire.");
+        return;
     }
+
+    fetch("https://babacolis.wuaze.com/check_livreur.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code: code })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (!data.success) {
+            alert(data.message);
+            return;
+        }
+
+        // On stocke l’info livreur côté navigateur
+        localStorage.setItem("livreur", "ok");
+        localStorage.setItem("livreur_id", data.livreur_id);
+        localStorage.setItem("livreur_nom", data.nom);
+
+        window.location.href = "livreur.html";
+    })
+    .catch(() => {
+        alert("Erreur de connexion au serveur.");
+    });
 }
 </script>
 
