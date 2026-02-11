@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin – Baba Colis</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+    body { font-family:'Poppins', sans-serif; background:#f5f5f5; margin:0; padding:20px; }
+    h1 { text-align:center; color:#008000; }
+    table {
+        width:100%; border-collapse:collapse; margin-top:20px;
+        background:white; border-radius:10px; overflow:hidden;
+    }
+    th, td {
+        padding:12px; border-bottom:1px solid #ddd; text-align:left;
+    }
+    th { background:#008000; color:white; }
+    tr:hover { background:#f0fff0; }
+    button {
+        padding:8px 12px; background:#008000; color:white;
+        border:none; border-radius:6px; cursor:pointer;
+    }
+    button:hover { background:#006600; }
+    .edit-box {
+        background:white; padding:20px; border-radius:10px;
+        margin-top:20px; display:none;
+    }
+    input, textarea {
+        width:100%; padding:10px; margin-top:10px;
+        border-radius:8px; border:1px solid #ccc;
+    }
+</style>
+</head>
+
+<body>
+
+<h1>Tableau de bord – Baba Colis</h1>
+
+<table id="tableColis">
+    <thead>
+        <tr>
+            <th>Numéro</th>
+            <th>Statut</th>
+            <th>Localisation</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<div class="edit-box" id="editBox">
+    <h2>Modifier le colis</h2>
+
+    <input type="text" id="editNumero" disabled>
+    <input type="text" id="editStatut" placeholder="Nouveau statut">
+    <input type="text" id="editLocalisation" placeholder="Nouvelle localisation">
+    <textarea id="editHistorique" placeholder="Nouvel événement historique"></textarea>
+
+    <button onclick="saveChanges()">Enregistrer</button>
+</div>
+
+<script>
+// Charger les colis
+function loadColis() {
+    fetch("https://babacolis.wuaze.com/get_colis.php")
+        .then(res => res.json())
+        .then(data => {
+            const tbody = document.querySelector("#tableColis tbody");
+            tbody.innerHTML = "";
+
+            data.forEach(c => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${c.numero}</td>
+                        <td>${c.statut}</td>
+                        <td>${c.localisation}</td>
+                        <td><button onclick="editColis('${c.numero}')">Modifier</button></td>
+                    </tr>
+                `;
+            });
+        });
+}
+
+loadColis();
+
+// Ouvrir l’éditeur
+function editColis(numero) {
+    fetch("https://babacolis.wuaze.com/get_colis.php")
+        .then(res => res.json())
+        .then(data => {
+            const colis = data.find(c => c.numero === numero);
+
+            document.getElementById("editNumero").value = colis.numero;
+            document.getElementById("editStatut").value = colis.statut;
+            document.getElementById("editLocalisation").value = colis.localisation;
+            document.getElementById("editHistorique").value = "";
+
+            document.getElementById("editBox").style.display = "block";
+        });
+}
+
+// Enregistrer les modifications
+function saveChanges() {
+    const numero = document.getElementById("editNumero").value;
+    const statut = document.getElementById("editStatut").value;
+    const localisation = document.getElementById("editLocalisation").value;
+    const historique = document.getElementById("editHistorique").value;
+
+    fetch("https://babacolis.wuaze.com/update_colis.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            numero: numero,
+            statut: statut,
+            localisation: localisation,
+            historique: historique
+        })
+    })
+    .then(res => res.json())
+    .then(() => {
+        alert("Colis mis à jour");
+        loadColis();
+        document.getElementById("editBox").style.display = "none";
+    });
+}
+</script>
+
+</body>
+</html>
