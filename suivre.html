@@ -5,20 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Suivi de colis – Baba Colis</title>
 
-<!-- Lien du manifest pour l'application --> 
 <link rel="manifest" href="manifest.json">
-
-<!-- Police moderne -->
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
-<!-- Leaflet (Carte OpenStreetMap) -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
 <style>
     body { margin:0; font-family:'Poppins', sans-serif; background:#f5f5f5; }
 
-    /* HEADER + MENU */
     header {
         background:#008000;
         padding:15px;
@@ -43,7 +38,6 @@
 
     nav a:hover { text-decoration:underline; }
 
-    /* CARD */
     .card {
         background:white;
         padding:20px;
@@ -77,7 +71,6 @@
 
     button:hover { background:#006600; }
 
-    /* Progression */
     .progress {
         margin-top:20px;
         display:flex;
@@ -107,7 +100,6 @@
 
     .step.active { background:#008000; }
 
-    /* Historique */
     .timeline {
         margin-top:20px;
         border-left:3px solid #008000;
@@ -116,7 +108,6 @@
 
     .event { margin-bottom:10px; }
 
-    /* Carte */
     #map {
         height:300px;
         width:100%;
@@ -150,7 +141,7 @@
 <div class="card">
     <h2>Rechercher un colis</h2>
 
-    <input type="text" id="trackingNumber" placeholder="Entrez votre numéro de suivi (ex : BC12345)">
+    <input type="text" id="trackingNumber" placeholder="Entrez votre numéro de suivi (ex : BC-20250211-123456)">
     <button onclick="track()">Rechercher</button>
 </div>
 
@@ -181,160 +172,15 @@
 </footer>
 
 <script>
-const colis = {
-    "BC12345": {
-        statut: "En transit",
-        localisation: "Thiès",
-        coords: [14.791, -16.925],
-        progression: 2,
-        historique: [
-            "02/02 – Colis déposé à Saint-Louis",
-            "03/02 – En transit vers Thiès",
-            "04/02 – Arrivé au centre de tri"
-        ]
-    },
-
-    "BC98765": {
-        statut: "Livré",
-        localisation: "Dakar",
-        coords: [14.7167, -17.4677],
-        progression: 4,
-        historique: [
-            "28/01 – Colis déposé à Thiès",
-            "29/01 – En transit",
-            "29/01 – Livré à Dakar"
-        ]
-    },
-
-    "BC55555": {
-        statut: "En préparation",
-        localisation: "Saint-Louis",
-        coords: [16.0179, -16.4896],
-        progression: 1,
-        historique: [
-            "07/02 – Colis enregistré",
-            "07/02 – En préparation"
-        ]
-    },
-
-    "BC20241": {
-        statut: "En transit",
-        localisation: "Kaolack",
-        coords: [14.147, -16.072],
-        progression: 2,
-        historique: [
-            "10/02 – Colis déposé à Dakar",
-            "11/02 – En transit vers Kaolack"
-        ]
-    },
-
-    "BC20242": {
-        statut: "En préparation",
-        localisation: "Dakar",
-        coords: [14.7167, -17.4677],
-        progression: 1,
-        historique: [
-            "10/02 – Colis enregistré",
-            "10/02 – En préparation à Dakar"
-        ]
-    },
-
-    "BC20243": {
-        statut: "Livré",
-        localisation: "Mbour",
-        coords: [14.419, -16.964],
-        progression: 4,
-        historique: [
-            "08/02 – Colis déposé à Thiès",
-            "09/02 – En transit",
-            "09/02 – Arrivé à Mbour",
-            "09/02 – Livré"
-        ]
-    },
-
-    "BC20244": {
-        statut: "En transit",
-        localisation: "Ziguinchor",
-        coords: [12.564, -16.273],
-        progression: 2,
-        historique: [
-            "09/02 – Colis déposé à Dakar",
-            "10/02 – En transit vers Ziguinchor"
-        ]
-    },
-
-    "BC20245": {
-        statut: "Arrivé au centre de tri",
-        localisation: "Thiès",
-        coords: [14.791, -16.925],
-        progression: 3,
-        historique: [
-            "09/02 – Colis déposé à Saint-Louis",
-            "10/02 – En transit",
-            "11/02 – Arrivé au centre de tri de Thiès"
-        ]
-    },
-
-    "BC20246": {
-        statut: "En livraison",
-        localisation: "Saint-Louis",
-        coords: [16.0179, -16.4896],
-        progression: 3,
-        historique: [
-            "08/02 – Colis déposé à Dakar",
-            "09/02 – En transit",
-            "10/02 – Arrivé à Saint-Louis",
-            "11/02 – En livraison"
-        ]
-    },
-
-    "BC20247": {
-        statut: "Enregistré",
-        localisation: "Dakar",
-        coords: [14.7167, -17.4677],
-        progression: 1,
-        historique: [
-            "11/02 – Colis enregistré"
-        ]
-    },
-
-    "BC20248": {
-        statut: "En transit",
-        localisation: "Louga",
-        coords: [15.618, -16.224],
-        progression: 2,
-        historique: [
-            "10/02 – Colis déposé à Dakar",
-            "11/02 – En transit vers Louga"
-        ]
-    },
-
-    "BC20249": {
-        statut: "Livré",
-        localisation: "Pikine",
-        coords: [14.764, -17.390],
-        progression: 4,
-        historique: [
-            "09/02 – Colis déposé à Thiès",
-            "10/02 – En transit",
-            "10/02 – Arrivé à Pikine",
-            "10/02 – Livré"
-        ]
-    },
-
-    "BC20250": {
-        statut: "En attente de prise en charge",
-        localisation: "Dakar",
-        coords: [14.7167, -17.4677],
-        progression: 1,
-        historique: [
-            "11/02 – Colis enregistré",
-            "11/02 – En attente de prise en charge"
-        ]
-    }
-};
-
+let colis = {};
 let map;
+
+// Charger les colis depuis InfinityFree
+fetch("https://babacolis.wuaze.com/colis.json")
+    .then(res => res.json())
+    .then(data => {
+        data.forEach(c => colis[c.numero] = c);
+    });
 
 function track() {
     const num = document.getElementById("trackingNumber").value.trim().toUpperCase();
@@ -379,7 +225,6 @@ function track() {
 }
 </script>
 
-<!-- Activation du service worker -->
 <script>
 if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("service-worker.js");
