@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gestion des livreurs – Baba Colis</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background:#f5f5f5;
+        padding:20px;
+    }
+    h1 {
+        text-align:center;
+        color:#008000;
+    }
+    table {
+        width:100%;
+        border-collapse:collapse;
+        background:white;
+        margin-top:20px;
+        border-radius:10px;
+        overflow:hidden;
+    }
+    th, td {
+        padding:12px;
+        border-bottom:1px solid #ddd;
+    }
+    th {
+        background:#008000;
+        color:white;
+    }
+    tr:hover {
+        background:#f0fff0;
+    }
+    button {
+        padding:8px 12px;
+        background:#008000;
+        color:white;
+        border:none;
+        border-radius:6px;
+        cursor:pointer;
+    }
+    button:hover {
+        background:#006600;
+    }
+    .logout {
+        background:#d9534f;
+        margin-bottom:20px;
+    }
+</style>
+</head>
+
+<body>
+
+<script>
+// Protection admin
+if (localStorage.getItem("admin") !== "ok") {
+    window.location.href = "login.html";
+}
+</script>
+
+<h1>Gestion des livreurs</h1>
+
+<button class="logout" onclick="logout()">Déconnexion</button>
+
+<table id="tableLivreurs">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nom</th>
+            <th>Code temporaire</th>
+            <th>Expiration</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<script>
+function logout() {
+    localStorage.removeItem("admin");
+    window.location.href = "login.html";
+}
+
+// Charger les livreurs
+function loadLivreurs() {
+    fetch("https://babacolis.wuaze.com/livreurs.json")
+        .then(res => res.json())
+        .then(data => {
+            const tbody = document.querySelector("#tableLivreurs tbody");
+            tbody.innerHTML = "";
+
+            data.forEach(l => {
+                const exp = l.expire_le
+                    ? new Date(l.expire_le * 1000).toLocaleString()
+                    : "—";
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${l.id}</td>
+                        <td>${l.nom}</td>
+                        <td>${l.code_temporaire ?? "—"}</td>
+                        <td>${exp}</td>
+                        <td>
+                            <button onclick="generateCode(${l.id})">Générer code</button>
+                            <button onclick="resetPassword(${l.id})" style="background:#d9534f;">Reset MDP</button>
+                        </td>
+                    </tr>
+                `;
+            });
+        });
+}
+
+loadLivreurs();
+
+// Générer un code temporaire
+function generateCode(id) {
+    fetch(`https://babacolis.wuaze.com/generate_code.php?id=${id}`)
+        .then(res => res.json())
+        .then(data => {
+            if (!data.success) {
+                alert(data.message);
+                return;
+            }
+
+            alert(`Code généré : ${data.code}\nExpire le : ${new Date(data.expire_le * 1000).toLocaleString()}`);
+            loadLivreurs();
+        });
+}
+
+// Réinitialiser un mot de passe
+function resetPassword(id) {
+    const newPass = prompt("Nouveau mot de passe pour ce livreur :");
+
+    if (!newPass) return;
+
+    fetch("https://babacolis.wuaze.com/update_livreur_password.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            id: id,
+            password: newPass
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        alert(data.message);
+    });
+}
+</script>
+
+</body>
+</html>
