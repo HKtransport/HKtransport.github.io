@@ -32,12 +32,25 @@
         width:100%; padding:10px; margin-top:10px;
         border-radius:8px; border:1px solid #ccc;
     }
+    .logout {
+        background:#d9534f;
+        margin-bottom:20px;
+    }
 </style>
 </head>
 
 <body>
 
+<!-- 🔐 PROTECTION ADMIN -->
+<script>
+if (localStorage.getItem("admin") !== "ok") {
+    window.location.href = "login.html";
+}
+</script>
+
 <h1>Tableau de bord – Baba Colis</h1>
+
+<button class="logout" onclick="logout()">Déconnexion</button>
 
 <table id="tableColis">
     <thead>
@@ -63,6 +76,12 @@
 </div>
 
 <script>
+// 🔐 Déconnexion
+function logout() {
+    localStorage.removeItem("admin");
+    window.location.href = "login.html";
+}
+
 // Charger les colis
 function loadColis() {
     fetch("https://babacolis.wuaze.com/get_colis.php")
