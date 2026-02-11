@@ -3,119 +3,135 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>H.K Transport – Accueil</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<title>Tableau de bord – Baba Colis</title>
 
 <style>
-    body { margin:0; font-family:'Poppins', sans-serif; background:#f5f5f5; }
-
-    header {
-        background:#008000;
-        padding:15px;
-        text-align:center;
-        color:white;
-        font-size:22px;
-        font-weight:600;
-    }
-
-    nav {
-        display:flex;
-        justify-content:center;
-        gap:25px;
-        margin-top:10px;
-        flex-wrap:wrap;
-    }
-
-    nav a {
-        color:white;
-        text-decoration:none;
-        font-weight:600;
-    }
-
-    nav a:hover { text-decoration:underline; }
-
-    .hero {
-        text-align:center;
-        padding:60px 20px;
-        background:white;
-        margin:20px auto;
-        max-width:900px;
-        border-radius:12px;
-        box-shadow:0 4px 15px rgba(0,0,0,0.1);
-    }
-
-    .hero h1 {
-        font-size:36px;
-        color:#008000;
-        margin-bottom:10px;
-    }
-
-    .hero p {
-        font-size:18px;
-        color:#333;
-        margin-bottom:25px;
-    }
-
-    .btn {
-        display:inline-block;
-        padding:15px 25px;
-        background:#008000;
-        color:white;
-        border-radius:10px;
-        font-size:18px;
-        font-weight:600;
-        text-decoration:none;
-    }
-
-    .btn:hover { background:#006600; }
-
-    footer {
-        background:#004d00;
-        color:white;
+    body {
+        font-family: Arial, sans-serif;
+        background:#f5f5f5;
         padding:20px;
+    }
+    h1 {
         text-align:center;
-        margin-top:40px;
+        color:#008000;
+    }
+    table {
+        width:100%;
+        border-collapse:collapse;
+        background:white;
+        margin-top:20px;
+        border-radius:10px;
+        overflow:hidden;
+    }
+    th, td {
+        padding:12px;
+        border-bottom:1px solid #ddd;
+    }
+    th {
+        background:#008000;
+        color:white;
+    }
+    tr:hover {
+        background:#f0fff0;
     }
 </style>
 </head>
 
 <body>
 
-<header>
-    H.K Transport
-    <nav>
-        <a href="index.html">Accueil</a>
-        <a href="suivre.html">Suivre un colis</a>
-        <a href="envoyer.html">Envoyer un colis</a>
-        <a href="pointsrelais.html">Points relais</a>
-        <a href="contact.html">Contact</a>
+<script>
+if (localStorage.getItem("admin") !== "ok") {
+    window.location.href = "login.html";
+}
+</script>
 
-        <!-- Accès Admin -->
-        <a href="admin.html">Admin</a>
+<!-- MENU ADMIN -->
+<style>
+    .admin-menu {
+        background:#008000;
+        padding:12px;
+        display:flex;
+        gap:20px;
+        align-items:center;
+        border-radius:8px;
+        margin-bottom:20px;
+        box-shadow:0 2px 6px rgba(0,0,0,0.2);
+    }
+    .admin-menu a {
+        color:white;
+        font-weight:bold;
+        text-decoration:none;
+        padding:8px 14px;
+        background:#006600;
+        border-radius:6px;
+        transition:0.2s;
+    }
+    .admin-menu a:hover {
+        background:#004d00;
+        transform:scale(1.05);
+    }
+    .admin-menu .logout {
+        margin-left:auto;
+        background:#d9534f;
+    }
+    .admin-menu .logout:hover {
+        background:#b52b27;
+    }
+</style>
 
-        <!-- Accès Livreur (connexion avec mot de passe permanent) -->
-        <a href="livreur-password-login.html">Livreur</a>
-
-        <!-- Gestion des livreurs (admin) -->
-        <a href="admin-livreurs.html" style="color:#ffeb3b; font-weight:bold;">
-            Gestion des livreurs
-        </a>
-    </nav>
-</header>
-
-<div class="hero">
-    <h1>Bienvenue chez H.K Transport</h1>
-    <p>Votre partenaire fiable pour l’envoi, le suivi et la livraison de colis partout au Sénégal.</p>
-
-    <a href="suivre.html" class="btn">Suivre un colis</a>
-    <a href="envoyer.html" class="btn" style="margin-left:10px;">Envoyer un colis</a>
+<div class="admin-menu">
+    <a href="index2.html">📦 Tableau de bord</a>
+    <a href="admin-livreurs.html">🚚 Gestion des livreurs</a>
+    <a href="admin-colis.html">📮 Gestion des colis</a>
+    <a class="logout" href="#" onclick="logout()">Déconnexion</a>
 </div>
 
-<footer>
-    © 2024 H.K Transport – Tous droits réservés  
-    <br>📞 +221 77 000 00 00 — ✉ contact@hktransport.com
-</footer>
+<script>
+function logout() {
+    localStorage.removeItem("admin");
+    window.location.href = "login.html";
+}
+</script>
+
+<h1>Tableau de bord – Baba Colis</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>Numéro</th>
+            <th>Statut</th>
+            <th>Localisation</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody id="colisTable"></tbody>
+</table>
+
+<script>
+function loadColis() {
+    fetch("https://babacolis.wuaze.com/get_colis.php")
+        .then(res => res.json())
+        .then(data => {
+            const tbody = document.getElementById("colisTable");
+            tbody.innerHTML = "";
+
+            data.forEach(c => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${c.numero}</td>
+                        <td>${c.statut}</td>
+                        <td>${c.localisation}</td>
+                        <td>
+                            <button onclick="modifierColis('${c.numero}')">Modifier</button>
+                        </td>
+                    </tr>
+                `;
+            });
+        });
+}
+
+loadColis();
+</script>
 
 </body>
 </html>
