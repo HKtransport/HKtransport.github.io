@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "nom": "Moussa",
+    "code_temporaire": null,
+    "expire_le": null,
+    "password": null
+  },
+  {
+    "id": 2,
+    "nom": "Ibrahima",
+    "code_temporaire": null,
+    "expire_le": null,
+    "password": null
+  }
+]
