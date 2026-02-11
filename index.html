@@ -24,6 +24,7 @@
         justify-content:center;
         gap:25px;
         margin-top:10px;
+        flex-wrap:wrap;
     }
 
     nav a {
@@ -89,12 +90,17 @@
         <a href="envoyer.html">Envoyer un colis</a>
         <a href="pointsrelais.html">Points relais</a>
         <a href="contact.html">Contact</a>
-        <a href="admin.html">Admin</a>
-        <a href="livreur.html">Livreur</a>
-        <a href="admin-livreurs.html">
-    <button style="margin-top:20px;">Gestion des livreurs</button>
-</a>
 
+        <!-- Accès Admin -->
+        <a href="admin.html">Admin</a>
+
+        <!-- Accès Livreur (connexion avec mot de passe permanent) -->
+        <a href="livreur-password-login.html">Livreur</a>
+
+        <!-- Gestion des livreurs (admin) -->
+        <a href="admin-livreurs.html" style="color:#ffeb3b; font-weight:bold;">
+            Gestion des livreurs
+        </a>
     </nav>
 </header>
 
