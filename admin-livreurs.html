@@ -49,6 +49,10 @@
         background:#d9534f;
         margin-bottom:20px;
     }
+    .add {
+        background:#007bff;
+        margin-left:10px;
+    }
 </style>
 </head>
 
@@ -64,6 +68,7 @@ if (localStorage.getItem("admin") !== "ok") {
 <h1>Gestion des livreurs</h1>
 
 <button class="logout" onclick="logout()">Déconnexion</button>
+<button class="add" onclick="addLivreur()">Ajouter un livreur</button>
 
 <table id="tableLivreurs">
     <thead>
@@ -84,7 +89,7 @@ function logout() {
     window.location.href = "login.html";
 }
 
-// Charger les livreurs depuis GitHub Pages (PLUS DE CORS)
+// Charger les livreurs depuis GitHub Pages
 function loadLivreurs() {
     fetch("livreurs.json")
         .then(res => res.json())
@@ -119,7 +124,29 @@ function loadLivreurs() {
 
 loadLivreurs();
 
-// Générer un code temporaire (InfinityFree)
+// Ajouter un livreur
+function addLivreur() {
+    const nom = prompt("Nom du nouveau livreur :");
+
+    if (!nom) return;
+
+    fetch("https://babacolis.wuaze.com/add_livreur.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nom: nom })
+    })
+    .then(res => res.json())
+    .then(data => {
+        alert(data.message);
+        loadLivreurs();
+    })
+    .catch(err => {
+        alert("Erreur lors de l'ajout du livreur.");
+        console.error(err);
+    });
+}
+
+// Générer un code temporaire
 function generateCode(id) {
     fetch(`https://babacolis.wuaze.com/generate_code.php?id=${id}`)
         .then(res => res.json())
@@ -134,7 +161,7 @@ function generateCode(id) {
         });
 }
 
-// Réinitialiser un mot de passe (InfinityFree)
+// Réinitialiser un mot de passe
 function resetPassword(id) {
     const newPass = prompt("Nouveau mot de passe pour ce livreur :");
 
