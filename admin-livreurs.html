@@ -84,9 +84,9 @@ function logout() {
     window.location.href = "login.html";
 }
 
-// Charger les livreurs (VERSION CORS)
+// Charger les livreurs depuis GitHub Pages (PLUS DE CORS)
 function loadLivreurs() {
-    fetch("https://babacolis.wuaze.com/get_livreurs.php")
+    fetch("livreurs.json")
         .then(res => res.json())
         .then(data => {
             const tbody = document.querySelector("#tableLivreurs tbody");
@@ -113,13 +113,13 @@ function loadLivreurs() {
         })
         .catch(err => {
             console.error("Erreur chargement livreurs :", err);
-            alert("Impossible de charger les livreurs (CORS).");
+            alert("Erreur : impossible de charger les livreurs.");
         });
 }
 
 loadLivreurs();
 
-// Générer un code temporaire
+// Générer un code temporaire (InfinityFree)
 function generateCode(id) {
     fetch(`https://babacolis.wuaze.com/generate_code.php?id=${id}`)
         .then(res => res.json())
@@ -134,7 +134,7 @@ function generateCode(id) {
         });
 }
 
-// Réinitialiser un mot de passe
+// Réinitialiser un mot de passe (InfinityFree)
 function resetPassword(id) {
     const newPass = prompt("Nouveau mot de passe pour ce livreur :");
 
