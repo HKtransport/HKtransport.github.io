@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Connexion Livreur – Baba Colis</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background:#f5f5f5;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        height:100vh;
+        margin:0;
+    }
+    .box {
+        background:white;
+        padding:25px;
+        border-radius:10px;
+        box-shadow:0 4px 10px rgba(0,0,0,0.1);
+        width:300px;
+        text-align:center;
+    }
+    input {
+        width:100%;
+        padding:12px;
+        margin-top:10px;
+        border-radius:8px;
+        border:1px solid #ccc;
+    }
+    button {
+        width:100%;
+        padding:12px;
+        margin-top:15px;
+        background:#008000;
+        color:white;
+        border:none;
+        border-radius:8px;
+        cursor:pointer;
+        font-size:16px;
+    }
+    button:hover {
+        background:#006600;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="box">
+    <h2>Connexion Livreur</h2>
+    <input type="password" id="pass" placeholder="Mot de passe livreur">
+    <button onclick="login()">Se connecter</button>
+</div>
+
+<script>
+function login() {
+    const mdp = "Livreur2024"; // 🔐 Mot de passe livreur
+    const input = document.getElementById("pass").value;
+
+    if (input === mdp) {
+        localStorage.setItem("livreur", "ok");
+        window.location.href = "livreur.html";
+    } else {
+        alert("Mot de passe incorrect");
+    }
+}
+</script>
+
+</body>
+</html>
