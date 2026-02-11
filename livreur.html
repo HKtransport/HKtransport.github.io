@@ -43,12 +43,24 @@
     button:hover {
         background:#006600;
     }
+    .logout {
+        background:#d9534f !important;
+    }
 </style>
 </head>
 
 <body>
 
+<!-- 🔐 PROTECTION LIVREUR -->
+<script>
+if (localStorage.getItem("livreur") !== "ok") {
+    window.location.href = "livreur-login.html";
+}
+</script>
+
 <h1>Module Livreur – Scan QR</h1>
+
+<button class="logout" onclick="logout()">Déconnexion</button>
 
 <!-- Scanner QR -->
 <div id="reader"></div>
@@ -69,6 +81,12 @@
 <button onclick="updateColis()">Mettre à jour</button>
 
 <script>
+// 🔐 Déconnexion
+function logout() {
+    localStorage.removeItem("livreur");
+    window.location.href = "livreur-login.html";
+}
+
 // 📱 SCAN QR CODE
 function onScanSuccess(decodedText) {
     document.getElementById("numero").value = decodedText;
