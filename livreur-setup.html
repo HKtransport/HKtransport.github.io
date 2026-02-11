@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Création mot de passe – Livreur</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background:#f5f5f5;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        height:100vh;
+        margin:0;
+    }
+    .box {
+        background:white;
+        padding:25px;
+        border-radius:10px;
+        box-shadow:0 4px 10px rgba(0,0,0,0.1);
+        width:300px;
+        text-align:center;
+    }
+    input {
+        width:100%;
+        padding:12px;
+        margin-top:10px;
+        border-radius:8px;
+        border:1px solid #ccc;
+    }
+    button {
+        width:100%;
+        padding:12px;
+        margin-top:15px;
+        background:#008000;
+        color:white;
+        border:none;
+        border-radius:8px;
+        cursor:pointer;
+        font-size:16px;
+    }
+    button:hover {
+        background:#006600;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="box">
+    <h2>Créer ton mot de passe</h2>
+    <input type="password" id="pass1" placeholder="Nouveau mot de passe">
+    <input type="password" id="pass2" placeholder="Confirmer le mot de passe">
+    <button onclick="savePassword()">Enregistrer</button>
+</div>
+
+<script>
+const livreurId = localStorage.getItem("livreur_setup_id");
+if (!livreurId) {
+    window.location.href = "livreur-login.html";
+}
+
+function savePassword() {
+    const p1 = document.getElementById("pass1").value;
+    const p2 = document.getElementById("pass2").value;
+
+    if (p1 === "" || p2 === "") {
+        alert("Remplis les deux champs.");
+        return;
+    }
+    if (p1 !== p2) {
+        alert("Les mots de passe ne correspondent pas.");
+        return;
+    }
+
+    fetch("https://babacolis.wuaze.com/update_livreur_password.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            id: parseInt(livreurId),
+            password: p1
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (!data.success) {
+            alert(data.message);
+            return;
+        }
+
+        alert("Mot de passe enregistré. Tu peux maintenant te connecter.");
+        localStorage.removeItem("livreur_setup_id");
+        localStorage.removeItem("livreur_setup_nom");
+        window.location.href = "livreur-password-login.html";
+    });
+}
+</script>
+
+</body>
+</html>
