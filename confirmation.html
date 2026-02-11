@@ -5,9 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Commande confirmée – Baba Colis</title>
 
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
 <style>
     body {
-        font-family: Arial, sans-serif;
+        font-family: 'Poppins', sans-serif;
         background: #f5f5f5;
         margin: 0;
         padding: 0;
@@ -24,16 +26,22 @@
     h1 {
         color: #008000;
         margin-bottom: 10px;
+        font-weight: 600;
     }
     p {
         font-size: 16px;
         margin: 10px 0;
     }
     .numero {
-        font-size: 20px;
+        font-size: 22px;
         font-weight: bold;
         color: #333;
         margin: 15px 0;
+    }
+    #qrcode {
+        margin: 20px auto;
+        width: 150px;
+        height: 150px;
     }
     button {
         margin-top: 20px;
@@ -49,6 +57,10 @@
     button:hover {
         background: #006600;
     }
+    .whatsapp {
+        background: #25D366;
+        margin-top: 10px;
+    }
 </style>
 </head>
 
@@ -63,15 +75,24 @@
 
     <div class="numero" id="numColis"></div>
 
+    <div id="qrcode"></div>
+
     <p>Un agent vous contactera pour finaliser la prise en charge.</p>
 
     <button onclick="window.location.href='index.html'">
         Retour à l’accueil
     </button>
+
+    <button class="whatsapp" id="btnWhatsapp">
+        Contacter Baba Colis via WhatsApp
+    </button>
 </div>
 
+<!-- QR Code library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
 <script>
-// Génération automatique d’un numéro de colis
+// Génération automatique du numéro de colis
 function genererNumero() {
     const date = new Date();
     const y = date.getFullYear();
@@ -82,7 +103,39 @@ function genererNumero() {
     return `BC-${y}${m}${d}-${random}`;
 }
 
-document.getElementById("numColis").textContent = genererNumero();
+const numero = genererNumero();
+document.getElementById("numColis").textContent = numero;
+
+// Génération du QR Code
+new QRCode(document.getElementById("qrcode"), {
+    text: numero,
+    width: 150,
+    height: 150
+});
+
+// Envoi automatique du colis dans la base JSON
+fetch("https://babacolis.wuaze.com/save_colis.php", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+        numero: numero,
+        statut: "Enregistré",
+        localisation: "En attente",
+        coords: [14.7167, -17.4677],
+        progression: 1,
+        historique: [
+            new Date().toLocaleString() + " – Colis enregistré"
+        ]
+    })
+});
+
+// Bouton WhatsApp
+document.getElementById("btnWhatsapp").onclick = () => {
+    const message = encodeURIComponent(
+        `Bonjour, je viens de valider un colis.\nNuméro : ${numero}`
+    );
+    window.location.href = `https://wa.me/221710344501?text=${message}`;
+};
 </script>
 
 </body>
