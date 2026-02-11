@@ -41,7 +41,6 @@
 
 <body>
 
-<!-- 🔐 PROTECTION ADMIN -->
 <script>
 if (localStorage.getItem("admin") !== "ok") {
     window.location.href = "login.html";
@@ -76,13 +75,11 @@ if (localStorage.getItem("admin") !== "ok") {
 </div>
 
 <script>
-// 🔐 Déconnexion
 function logout() {
     localStorage.removeItem("admin");
     window.location.href = "login.html";
 }
 
-// Charger les colis
 function loadColis() {
     fetch("https://babacolis.wuaze.com/get_colis.php")
         .then(res => res.json())
@@ -105,7 +102,6 @@ function loadColis() {
 
 loadColis();
 
-// Ouvrir l’éditeur
 function editColis(numero) {
     fetch("https://babacolis.wuaze.com/get_colis.php")
         .then(res => res.json())
@@ -121,7 +117,6 @@ function editColis(numero) {
         });
 }
 
-// Enregistrer les modifications
 function saveChanges() {
     const numero = document.getElementById("editNumero").value;
     const statut = document.getElementById("editStatut").value;
