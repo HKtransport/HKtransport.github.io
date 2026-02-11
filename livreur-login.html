@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Connexion Livreur – Baba Colis</title>
+<title>Connexion Livreur – Code temporaire</title>
 
 <style>
     body {
@@ -76,12 +76,10 @@ function login() {
             return;
         }
 
-        // On stocke l’info livreur côté navigateur
-        localStorage.setItem("livreur", "ok");
-        localStorage.setItem("livreur_id", data.livreur_id);
-        localStorage.setItem("livreur_nom", data.nom);
+        localStorage.setItem("livreur_setup_id", data.livreur_id);
+        localStorage.setItem("livreur_setup_nom", data.nom);
 
-        window.location.href = "livreur.html";
+        window.location.href = "livreur-setup.html";
     })
     .catch(() => {
         alert("Erreur de connexion au serveur.");
