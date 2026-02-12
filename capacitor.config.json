@@ -1,0 +1,13 @@
+{
+  "appId": "com.babacolis.app",
+  "appName": "Baba Colis",
+  "webDir": "dist",
+  "bundledWebRuntime": false,
+  "server": {
+    "url": "https://hktransport.github.io",
+    "cleartext": true
+  },
+  "android": {
+    "allowMixedContent": true
+  }
+}
