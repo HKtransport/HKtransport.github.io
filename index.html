@@ -1,132 +1,204 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Baba Colis – Accueil</title>
+    <meta charset="UTF-8">
+    <title>Baba Colis - Accueil</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-    body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-        background: #f5f5f5;
-    }
+    <!-- Couleurs navigateur / thème -->
+    <meta name="theme-color" content="#27ae60">
 
-    /* NAVBAR */
-    nav {
-        background: #008000;
-        padding: 15px;
-        display: flex;
-        gap: 20px;
-        align-items: center;
-    }
+    <!-- Manifest PWA -->
+    <link rel="manifest" href="manifest.json">
 
-    nav a {
-        color: white;
-        text-decoration: none;
-        font-weight: bold;
-        font-size: 16px;
-    }
+    <!-- PWA iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="white">
+    <meta name="apple-mobile-web-app-title" content="Baba Colis">
+    <link rel="apple-touch-icon" href="icon-192.png">
 
-    nav a:hover {
-        text-decoration: underline;
-    }
+    <!-- Styles simples (tu peux remplacer par ton CSS existant) -->
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: Arial, sans-serif; background: #f5f5f5; color: #333; }
 
-    .right {
-        margin-left: auto;
-    }
+        header {
+            background: #27ae60;
+            color: #fff;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo img {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+        }
+        .logo span {
+            font-size: 20px;
+            font-weight: bold;
+        }
 
-    /* HEADER */
-    header {
-        background: #008000;
-        padding: 60px 20px;
-        text-align: center;
-        color: white;
-        font-size: 32px;
-        font-weight: bold;
-    }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin-left: 15px;
+            font-size: 14px;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
 
-    /* SECTIONS */
-    .container {
-        max-width: 900px;
-        margin: auto;
-        padding: 20px;
-    }
+        .main {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 15px;
+        }
 
-    .card {
-        background: white;
-        padding: 20px;
-        border-radius: 10px;
-        margin-bottom: 20px;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
+        .main h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
 
-    .card h2 {
-        color: #008000;
-    }
+        .main p.subtitle {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #555;
+        }
 
-    .btn {
-        display: inline-block;
-        padding: 12px 20px;
-        background: #008000;
-        color: white;
-        border-radius: 6px;
-        text-decoration: none;
-        font-size: 16px;
-        margin-top: 10px;
-    }
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 20px;
+        }
 
-    .btn:hover {
-        background: #006600;
-    }
-</style>
+        .card {
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card h2 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .card p {
+            font-size: 14px;
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        .card a.btn {
+            display: inline-block;
+            padding: 10px 14px;
+            background: #27ae60;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .card a.btn:hover {
+            background: #219150;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 13px;
+            color: #777;
+        }
+
+        @media (max-width: 600px) {
+            nav {
+                font-size: 13px;
+            }
+            nav a {
+                margin-left: 8px;
+            }
+        }
+    </style>
 </head>
-
 <body>
 
-<!-- NAVBAR -->
-<nav>
-    <a href="index.html">Accueil</a>
-    <a href="envoyer.html">Envoyer un colis</a>
-    <a href="suivre.html">Suivre un colis</a>
-    <a href="pointsrelais.html">Points relais</a>
-    <a href="contact.html">Contact</a>
-    <a href="livreur-login.html" class="right">Espace livreur</a>
-</nav>
-
-<!-- HEADER -->
 <header>
-    Bienvenue sur Baba Colis
+    <div class="logo">
+        <!-- Ton logo carré sur fond blanc -->
+        <img src="icon-192.png" alt="Baba Colis">
+        <span>Baba Colis</span>
+    </div>
+    <nav>
+        <a href="index.html">Accueil</a>
+        <a href="envoyer.html">Envoyer un colis</a>
+        <a href="suivre.html">Suivre un colis</a>
+        <a href="pointsrelais.html">Points relais</a>
+        <a href="contact.html">Contact</a>
+        <a href="livreur-login.html">Espace livreur</a>
+    </nav>
 </header>
 
-<!-- CONTENT -->
-<div class="container">
+<main class="main">
+    <h1>Bienvenue sur Baba Colis</h1>
+    <p class="subtitle">
+        Expédiez, suivez et gérez vos colis facilement partout au Sénégal.
+    </p>
 
-    <div class="card">
-        <h2>Envoyer un colis</h2>
-        <p>Expédiez vos colis rapidement et facilement partout au Sénégal.</p>
-        <a href="envoyer.html" class="btn">Envoyer maintenant</a>
-    </div>
+    <section class="cards">
+        <div class="card">
+            <h2>Envoyer un colis</h2>
+            <p>Expédiez vos colis rapidement et facilement partout au Sénégal.</p>
+            <a class="btn" href="envoyer.html">Envoyer maintenant</a>
+        </div>
 
-    <div class="card">
-        <h2>Suivre un colis</h2>
-        <p>Suivez votre colis en temps réel grâce à votre numéro de suivi.</p>
-        <a href="suivre.html" class="btn">Suivre un colis</a>
-    </div>
+        <div class="card">
+            <h2>Suivre un colis</h2>
+            <p>Suivez votre colis en temps réel grâce à votre numéro de suivi.</p>
+            <a class="btn" href="suivre.html">Suivre un colis</a>
+        </div>
 
-    <div class="card">
-        <h2>Points relais</h2>
-        <p>Trouvez le point relais le plus proche pour déposer ou récupérer un colis.</p>
-        <a href="pointsrelais.html" class="btn">Voir les points relais</a>
-    </div>
+        <div class="card">
+            <h2>Points relais</h2>
+            <p>Trouvez le point relais le plus proche pour déposer ou récupérer un colis.</p>
+            <a class="btn" href="pointsrelais.html">Voir les points relais</a>
+        </div>
 
-    <div class="card">
-        <h2>Contact</h2>
-        <p>Besoin d’aide ? Notre équipe est disponible pour vous accompagner.</p>
-        <a href="contact.html" class="btn">Nous contacter</a>
-    </div>
+        <div class="card">
+            <h2>Contact</h2>
+            <p>Besoin d’aide ? Notre équipe est disponible pour vous accompagner.</p>
+            <a class="btn" href="contact.html">Nous contacter</a>
+        </div>
+    </section>
+</main>
 
-</div>
+<footer>
+    &copy; <?php echo date("Y"); ?> Baba Colis. Tous droits réservés.
+</footer>
+
+<!-- Enregistrement du service worker -->
+<script>
+if ("serviceWorker" in navigator) {
+    window.addEventListener("load", function() {
+        navigator.serviceWorker.register("service-worker.js")
+            .catch(function(err) {
+                console.log("Service Worker registration failed:", err);
+            });
+    });
+}
+</script>
 
 </body>
 </html>
