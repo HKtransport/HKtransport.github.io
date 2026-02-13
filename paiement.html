@@ -50,13 +50,18 @@ const dest_prenom = params.get("dest_prenom");
 const dest_tel = params.get("dest_tel");
 
 // 🔵 COLIS
-const prix = params.get("prix");
+const prix = params.get("prix"); // ⚠️ C’est cette valeur qui doit être envoyée à PayTech
 const depart = params.get("depart");
 const arrivee = params.get("arrivee");
 const poids = params.get("poids");
 const longueur = params.get("longueur");
 const largeur = params.get("largeur");
 const hauteur = params.get("hauteur");
+
+// Vérification : si prix est null → erreur
+if (!prix) {
+    alert("Erreur : le montant du colis est introuvable.");
+}
 
 // 🔵 AFFICHAGE COMPLET
 document.getElementById("recap").innerHTML = `
@@ -81,7 +86,7 @@ document.getElementById("recap").innerHTML = `
     <p style="font-size:20px;"><b>${prix} CFA</b></p>
 `;
 
-// Envoi du prix à PayTech
+// 🔵 Envoi du prix à PayTech (CORRECTION IMPORTANTE)
 document.getElementById("prixHidden").value = prix;
 </script>
 
