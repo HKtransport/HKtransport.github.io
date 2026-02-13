@@ -67,12 +67,14 @@
 <body>
 
 <div class="container">
-    <h1>Commande confirmée</h1>
+    <h1>Paiement confirmé ✔</h1>
 
-    <p>Merci d’avoir choisi <b>Baba Colis</b> pour votre envoi.</p>
+    <p>Merci d’avoir choisi <b>Baba Colis</b>.</p>
 
-    <p>Votre numéro de colis est :</p>
+    <p>Votre numéro de transaction Wave :</p>
+    <div class="numero" id="transaction"></div>
 
+    <p>Votre numéro de colis :</p>
     <div class="numero" id="numColis"></div>
 
     <div id="qrcode"></div>
@@ -92,6 +94,11 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 <script>
+// Récupération du numéro de transaction envoyé depuis paiement.html
+const params = new URLSearchParams(window.location.search);
+const transaction = params.get("transaction");
+document.getElementById("transaction").textContent = transaction;
+
 // Génération automatique du numéro de colis
 function genererNumero() {
     const date = new Date();
@@ -106,37 +113,15 @@ function genererNumero() {
 const numero = genererNumero();
 document.getElementById("numColis").textContent = numero;
 
-// Génération du QR Code
+// Génération du QR Code du colis
 new QRCode(document.getElementById("qrcode"), {
     text: numero,
     width: 150,
     height: 150
 });
 
-// Envoi automatique du colis dans la base JSON
+// Enregistrement du colis dans la base JSON
 fetch("https://babacolis.wuaze.com/save_colis.php", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-        numero: numero,
-        statut: "Enregistré",
-        localisation: "En attente",
-        coords: [14.7167, -17.4677],
-        progression: 1,
-        historique: [
-            new Date().toLocaleString() + " – Colis enregistré"
-        ]
-    })
-});
-
-// Bouton WhatsApp
-document.getElementById("btnWhatsapp").onclick = () => {
-    const message = encodeURIComponent(
-        `Bonjour, je viens de valider un colis.\nNuméro : ${numero}`
-    );
-    window.location.href = `https://wa.me/221710344501?text=${message}`;
-};
-</script>
-
-</body>
-</html>
