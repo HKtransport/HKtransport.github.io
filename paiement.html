@@ -29,10 +29,10 @@
         <li>Orange Money</li>
     </ul>
 
-    <!-- FORMULAIRE PAYTECH -->
+    <!-- FORMULAIRE PAYTECH (VERSION QUI FORCE LE POST) -->
     <form id="formPaytech" action="https://babacolis.wuaze.com/paytech.php" method="POST">
         <input type="hidden" name="prix" id="prixHidden">
-        <button type="submit" style="background:#008000;">Payer maintenant</button>
+        <button type="button" onclick="document.getElementById('formPaytech').submit()">Payer maintenant</button>
     </form>
 </div>
 
