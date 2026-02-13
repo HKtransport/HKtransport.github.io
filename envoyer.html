@@ -20,6 +20,35 @@
 <div class="card">
     <h2>Envoyer un colis</h2>
 
+    <!-- 🔵 EXPÉDITEUR -->
+    <h3>Informations de l'expéditeur</h3>
+
+    <label>Nom</label>
+    <input type="text" id="exp_nom" placeholder="Nom de l'expéditeur">
+
+    <label>Prénom</label>
+    <input type="text" id="exp_prenom" placeholder="Prénom de l'expéditeur">
+
+    <label>Téléphone</label>
+    <input type="tel" id="exp_tel" placeholder="Ex : 77 123 45 67">
+
+    <hr>
+
+    <!-- 🔵 DESTINATAIRE -->
+    <h3>Informations du destinataire</h3>
+
+    <label>Nom</label>
+    <input type="text" id="dest_nom" placeholder="Nom du destinataire">
+
+    <label>Prénom</label>
+    <input type="text" id="dest_prenom" placeholder="Prénom du destinataire">
+
+    <label>Téléphone</label>
+    <input type="tel" id="dest_tel" placeholder="Ex : 78 987 65 43">
+
+    <hr>
+
+    <!-- 🔵 INFOS COLIS -->
     <label>Ville de départ</label>
     <select id="depart">
         <option>Saint-Louis</option>
@@ -27,112 +56,3 @@
         <option>Guéoul</option>
         <option>Kébémer</option>
         <option>Mékhé</option>
-        <option>Tivaouane</option>
-        <option>Thiès</option>
-        <option>Dakar</option>
-    </select>
-
-    <label>Ville d’arrivée</label>
-    <select id="arrivee">
-        <option>Saint-Louis</option>
-        <option>Louga</option>
-        <option>Guéoul</option>
-        <option>Kébémer</option>
-        <option>Mékhé</option>
-        <option>Tivaouane</option>
-        <option>Thiès</option>
-        <option>Dakar</option>
-    </select>
-
-    <label>Poids du colis (kg)</label>
-    <input type="number" id="poids" placeholder="Ex : 2">
-
-    <h3>Dimensions du colis</h3>
-
-    <label>Longueur (cm)</label>
-    <input type="number" id="longueur" placeholder="Ex : 40">
-
-    <label>Largeur (cm)</label>
-    <input type="number" id="largeur" placeholder="Ex : 30">
-
-    <label>Hauteur (cm)</label>
-    <input type="number" id="hauteur" placeholder="Ex : 20">
-
-    <button onclick="calculer()">Calculer le prix</button>
-
-    <h3 id="resultat"></h3>
-
-    <button id="btnPaiement" style="display:none; background:#004d00;">
-        Payer maintenant
-    </button>
-</div>
-
-<script>
-function calculer() {
-    let depart = document.getElementById("depart").value;
-    let arrivee = document.getElementById("arrivee").value;
-    let poids = Number(document.getElementById("poids").value);
-
-    let longueur = Number(document.getElementById("longueur").value);
-    let largeur = Number(document.getElementById("largeur").value);
-    let hauteur = Number(document.getElementById("hauteur").value);
-
-    if (poids <= 0) {
-        alert("Veuillez entrer un poids valide.");
-        return;
-    }
-
-    if (longueur > 110 || largeur > 110 || hauteur > 110) {
-        alert("Dimensions trop grandes. Maximum autorisé : 110 cm.");
-        return;
-    }
-
-    const ordre = [
-        "Saint-Louis",
-        "Louga",
-        "Guéoul",
-        "Kébémer",
-        "Mékhé",
-        "Tivaouane",
-        "Thiès",
-        "Dakar"
-    ];
-
-    let distance = Math.abs(ordre.indexOf(depart) - ordre.indexOf(arrivee));
-
-    let prixDistance = distance > 0 ? 1000 + (distance - 1) * 500 : 0;
-
-    let prixPoids = poids > 1 ? 500 + (Math.ceil(poids - 1) * 500) : 500;
-
-    let prixDimensions = 0;
-    if (longueur > 30) prixDimensions += 350;
-    if (largeur > 30) prixDimensions += 350;
-    if (hauteur > 30) prixDimensions += 350;
-
-    let prix = prixDistance + prixPoids + prixDimensions;
-
-    document.getElementById("resultat").innerHTML =
-        "Prix total : <b>" + prix + " CFA</b>";
-
-    const btn = document.getElementById("btnPaiement");
-    btn.style.display = "block";
-
-    // 🔥 ENVOI COMPLET DES DONNÉES 🔥
-    btn.onclick = function() {
-        const params = new URLSearchParams({
-            prix: prix,
-            depart: depart,
-            arrivee: arrivee,
-            poids: poids,
-            longueur: longueur,
-            largeur: largeur,
-            hauteur: hauteur
-        });
-
-        window.location.href = "paiement.html?" + params.toString();
-    };
-}
-</script>
-
-</body>
-</html>
