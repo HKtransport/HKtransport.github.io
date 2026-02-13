@@ -30,7 +30,7 @@
     </ul>
 
     <!-- FORMULAIRE PAYTECH -->
-    <form action="https://babacolis.wuaze.com/paytech.php" method="POST">
+    <form id="formPaytech" action="https://babacolis.wuaze.com/paytech.php" method="POST">
         <input type="hidden" name="prix" id="prixHidden">
         <button type="submit" style="background:#008000;">Payer maintenant</button>
     </form>
@@ -50,7 +50,7 @@ const dest_prenom = params.get("dest_prenom");
 const dest_tel = params.get("dest_tel");
 
 // 🔵 COLIS
-const prix = params.get("prix"); // ⚠️ C’est cette valeur qui doit être envoyée à PayTech
+const prix = params.get("prix");
 const depart = params.get("depart");
 const arrivee = params.get("arrivee");
 const poids = params.get("poids");
@@ -86,7 +86,7 @@ document.getElementById("recap").innerHTML = `
     <p style="font-size:20px;"><b>${prix} CFA</b></p>
 `;
 
-// 🔵 Envoi du prix à PayTech (CORRECTION IMPORTANTE)
+// 🔵 Envoi du prix à PayTech
 document.getElementById("prixHidden").value = prix;
 </script>
 
