@@ -71,7 +71,7 @@
 
     <p>Merci d’avoir choisi <b>Baba Colis</b>.</p>
 
-    <p>Votre numéro de transaction Wave :</p>
+    <p>Référence de paiement PayTech :</p>
     <div class="numero" id="transaction"></div>
 
     <p>Votre numéro de colis :</p>
@@ -94,9 +94,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 <script>
-// Récupération du numéro de transaction envoyé depuis paiement.html
+// Récupération de la référence PayTech
 const params = new URLSearchParams(window.location.search);
-const transaction = params.get("transaction");
+const transaction = params.get("ref"); // PayTech renvoie ?ref=XXXX
 document.getElementById("transaction").textContent = transaction;
 
 // Génération automatique du numéro de colis
@@ -125,3 +125,26 @@ fetch("https://babacolis.wuaze.com/save_colis.php", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
+        numero: numero,
+        statut: "Enregistré",
+        localisation: "En attente",
+        coords: [14.7167, -17.4677],
+        progression: 1,
+        historique: [
+            new Date().toLocaleString() + " – Paiement confirmé via PayTech",
+            "Référence PayTech : " + transaction
+        ]
+    })
+});
+
+// Bouton WhatsApp
+document.getElementById("btnWhatsapp").onclick = () => {
+    const message = encodeURIComponent(
+        `Bonjour, je viens de valider un colis.\nNuméro : ${numero}\nRéférence PayTech : ${transaction}`
+    );
+    window.location.href = `https://wa.me/221710344501?text=${message}`;
+};
+</script>
+
+</body>
+</html>
