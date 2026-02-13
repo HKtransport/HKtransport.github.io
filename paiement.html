@@ -12,6 +12,7 @@
     button:hover { background:#006600; }
     p { margin:8px 0; }
     h3 { margin-top:25px; }
+    input { width:100%; padding:12px; border-radius:8px; border:1px solid #ccc; margin-top:5px; }
 </style>
 </head>
 
@@ -22,22 +23,27 @@
 
     <div id="recap"></div>
 
-    <button onclick="window.location.href='confirmation.html'">
-        Valider la commande
+    <h3>Payer avec Wave</h3>
+
+    <p>Scannez ce QR Code avec votre application Wave :</p>
+
+    <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=wave:710344501"
+         alt="QR Code Wave" style="width:250px; display:block; margin:auto;">
+
+    <p style="margin-top:15px;">
+        Ou envoyez le montant à ce numéro : <b>71 034 45 01</b>
+    </p>
+
+    <label>Numéro de transaction Wave</label>
+    <input type="text" id="transaction" placeholder="Ex : W123456789">
+
+    <button onclick="validerPaiement()" style="background:#004d00; margin-top:20px;">
+        J'ai payé
     </button>
 </div>
 
 <script>
 const params = new URLSearchParams(window.location.search);
-
-// 🔵 RÉCUPÉRATION DES DONNÉES
-const prix = params.get("prix");
-const depart = params.get("depart");
-const arrivee = params.get("arrivee");
-const poids = params.get("poids");
-const longueur = params.get("longueur");
-const largeur = params.get("largeur");
-const hauteur = params.get("hauteur");
 
 // 🔵 EXPÉDITEUR
 const exp_nom = params.get("exp_nom");
@@ -49,7 +55,16 @@ const dest_nom = params.get("dest_nom");
 const dest_prenom = params.get("dest_prenom");
 const dest_tel = params.get("dest_tel");
 
-// 🔵 AFFICHAGE
+// 🔵 COLIS
+const prix = params.get("prix");
+const depart = params.get("depart");
+const arrivee = params.get("arrivee");
+const poids = params.get("poids");
+const longueur = params.get("longueur");
+const largeur = params.get("largeur");
+const hauteur = params.get("hauteur");
+
+// 🔵 AFFICHAGE COMPLET
 document.getElementById("recap").innerHTML = `
 
     <h3>Informations de l'expéditeur</h3>
@@ -71,6 +86,17 @@ document.getElementById("recap").innerHTML = `
     <h3>Montant total</h3>
     <p style="font-size:20px;"><b>${prix} CFA</b></p>
 `;
+
+function validerPaiement() {
+    let trans = document.getElementById("transaction").value;
+
+    if (trans.length < 5) {
+        alert("Veuillez entrer un numéro de transaction valide.");
+        return;
+    }
+
+    window.location.href = "confirmation.html?transaction=" + trans;
+}
 </script>
 
 </body>
