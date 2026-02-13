@@ -29,65 +29,43 @@
         <li>Orange Money</li>
     </ul>
 
-    <!-- FORMULAIRE PAYTECH (VERSION QUI FORCE LE POST) -->
-    <form id="formPaytech" action="https://babacolis.wuaze.com/paytech.php" method="POST">
-        <input type="hidden" name="prix" id="prixHidden">
-        <button type="button" onclick="document.getElementById('formPaytech').submit()">Payer maintenant</button>
-    </form>
+    <button id="payBtn">Payer maintenant</button>
 </div>
 
 <script>
 const params = new URLSearchParams(window.location.search);
 
-// 🔵 EXPÉDITEUR
-const exp_nom = params.get("exp_nom");
-const exp_prenom = params.get("exp_prenom");
-const exp_tel = params.get("exp_tel");
-
-// 🔵 DESTINATAIRE
-const dest_nom = params.get("dest_nom");
-const dest_prenom = params.get("dest_prenom");
-const dest_tel = params.get("dest_tel");
-
 // 🔵 COLIS
 const prix = params.get("prix");
-const depart = params.get("depart");
-const arrivee = params.get("arrivee");
-const poids = params.get("poids");
-const longueur = params.get("longueur");
-const largeur = params.get("largeur");
-const hauteur = params.get("hauteur");
 
-// Vérification : si prix est null → erreur
+// Vérification
 if (!prix) {
-    alert("Erreur : le montant du colis est introuvable.");
+    alert("Erreur : montant introuvable.");
 }
 
-// 🔵 AFFICHAGE COMPLET
+// 🔵 AFFICHAGE
 document.getElementById("recap").innerHTML = `
-
-    <h3>Informations de l'expéditeur</h3>
-    <p><b>Nom :</b> ${exp_nom}</p>
-    <p><b>Prénom :</b> ${exp_prenom}</p>
-    <p><b>Téléphone :</b> ${exp_tel}</p>
-
-    <h3>Informations du destinataire</h3>
-    <p><b>Nom :</b> ${dest_nom}</p>
-    <p><b>Prénom :</b> ${dest_prenom}</p>
-    <p><b>Téléphone :</b> ${dest_tel}</p>
-
-    <h3>Détails du colis</h3>
-    <p><b>Ville de départ :</b> ${depart}</p>
-    <p><b>Ville d’arrivée :</b> ${arrivee}</p>
-    <p><b>Poids :</b> ${poids} kg</p>
-    <p><b>Dimensions :</b> ${longueur} x ${largeur} x ${hauteur} cm</p>
-
     <h3>Montant total</h3>
     <p style="font-size:20px;"><b>${prix} CFA</b></p>
 `;
 
-// 🔵 Envoi du prix à PayTech
-document.getElementById("prixHidden").value = prix;
+// 🔵 ENVOI POST FORCÉ
+document.getElementById("payBtn").onclick = function () {
+
+    const form = document.createElement("form");
+    form.method = "POST";
+    form.action = "https://babacolis.wuaze.com/paytech.php";
+
+    const input = document.createElement("input");
+    input.type = "hidden";
+    input.name = "prix";
+    input.value = prix;
+
+    form.appendChild(input);
+    document.body.appendChild(form);
+
+    form.submit(); // 🚀 Envoi POST forcé
+};
 </script>
 
 </body>
