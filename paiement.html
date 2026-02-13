@@ -12,7 +12,6 @@
     button:hover { background:#006600; }
     p { margin:8px 0; }
     h3 { margin-top:25px; }
-    input { width:100%; padding:12px; border-radius:8px; border:1px solid #ccc; margin-top:5px; }
 </style>
 </head>
 
@@ -23,23 +22,18 @@
 
     <div id="recap"></div>
 
-    <h3>Payer avec Wave</h3>
+    <h3>Paiement sécurisé</h3>
+    <p>Vous allez être redirigé vers PayTech pour payer via :</p>
+    <ul>
+        <li>Wave</li>
+        <li>Orange Money</li>
+    </ul>
 
-    <p>Scannez ce QR Code avec votre application Wave :</p>
-
-    <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=wave:710344501"
-         alt="QR Code Wave" style="width:250px; display:block; margin:auto;">
-
-    <p style="margin-top:15px;">
-        Ou envoyez le montant à ce numéro : <b>71 034 45 01</b>
-    </p>
-
-    <label>Numéro de transaction Wave</label>
-    <input type="text" id="transaction" placeholder="Ex : W123456789">
-
-    <button onclick="validerPaiement()" style="background:#004d00; margin-top:20px;">
-        J'ai payé
-    </button>
+    <!-- FORMULAIRE PAYTECH -->
+    <form action="https://babacolis.wuaze.com/paytech.php" method="POST">
+        <input type="hidden" name="prix" id="prixHidden">
+        <button type="submit" style="background:#008000;">Payer maintenant</button>
+    </form>
 </div>
 
 <script>
@@ -87,16 +81,8 @@ document.getElementById("recap").innerHTML = `
     <p style="font-size:20px;"><b>${prix} CFA</b></p>
 `;
 
-function validerPaiement() {
-    let trans = document.getElementById("transaction").value;
-
-    if (trans.length < 5) {
-        alert("Veuillez entrer un numéro de transaction valide.");
-        return;
-    }
-
-    window.location.href = "confirmation.html?transaction=" + trans;
-}
+// Envoi du prix à PayTech
+document.getElementById("prixHidden").value = prix;
 </script>
 
 </body>
